@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lisensi;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AdminController extends Controller
 {
@@ -13,7 +15,18 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return response()->view('admin.dashboard');
+        $data = Lisensi::paginate(20);
+        return response()->view('admin.dashboard', compact('data'));
+    }
+
+    public function userPage()
+    {
+        return response()->view('admin.user');
+    }
+
+    public function notifikasi()
+    {
+        return response()->view('admin.notifikasi');
     }
 
     /**
@@ -23,7 +36,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        // return view('admin.dashboard');
     }
 
     /**
@@ -34,7 +47,27 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_dokumen' => 'required',
+            'start' => 'required|date',
+            'end' => 'required|date',
+            'reminder1' => 'date',
+            'reminder2' => 'date',
+            'reminder3' => 'date',
+        ]);
+
+        // dd($request);
+        $data = new Lisensi();
+        $data->nama_dokumen = $request->nama_dokumen;
+        $data->start = $request->start;
+        $data->end = $request->end;
+        $data->reminder1 = $request->reminder1;
+        $data->reminder2 = $request->reminder2;
+        $data->reminder3 = $request->reminder3;
+        $data->save();
+
+        Alert::success('Berhasil', 'Data telah tersimpan.');
+        return redirect() ->route('dashboard');
     }
 
     /**

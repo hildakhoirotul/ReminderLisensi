@@ -60,7 +60,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             if (auth()->user()->is_admin == 1) {
-                Alert::success('Berhasil Masuk', 'Selamat Datang ' . auth()->user()->nik);
+                Alert::success('Berhasil Masuk', 'Selamat Datang ' . auth()->user()->nama);
                 return redirect()->route('dashboard');
             } else {
                 Alert::success('Berhasil Masuk', 'Selamat Datang ' . auth()->user()->nama);
