@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReminderNotification;
+use App\Exports\LisensiExport;
+use App\Imports\LisensiImport;
 use App\Models\Lisensi;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -15,28 +22,21 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $data = Lisensi::paginate(20);
-        return response()->view('admin.dashboard', compact('data'));
+        $count = Lisensi::count();
+        $data = Lisensi::paginate(100);
+        return response()->view('admin.dashboard', compact('data', 'count'));
     }
 
     public function userPage()
     {
-        return response()->view('admin.user');
+        $count = User::count();
+        $data = User::paginate(100);
+        return response()->view('admin.user', compact('data', 'count'));
     }
 
     public function notifikasi()
     {
         return response()->view('admin.notifikasi');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // return view('admin.dashboard');
     }
 
     /**
@@ -56,7 +56,6 @@ class AdminController extends Controller
             'reminder3' => 'date',
         ]);
 
-        // dd($request);
         $data = new Lisensi();
         $data->nama_dokumen = $request->nama_dokumen;
         $data->start = $request->start;
@@ -66,8 +65,125 @@ class AdminController extends Controller
         $data->reminder3 = $request->reminder3;
         $data->save();
 
+        // if ($data->end) {
+        //     $endDateTime = \Carbon\Carbon::parse($data->end);
+        //     $now = \Carbon\Carbon::now();
+
+        //     if ($now >= $endDateTime) {
+        //         event(new ReminderNotification($data));
+        //     }
+        // }
+
         Alert::success('Berhasil', 'Data telah tersimpan.');
-        return redirect() ->route('dashboard');
+        return redirect()->route('dashboard');
+    }
+
+    public function userStore(Request $request)
+    {
+        $request->validate([
+            'nik' => 'required',
+            'nama' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $data = new User();
+        $data->nik = $request->nik;
+        $data->nama = $request->nama;
+        $data->email = $request->email;
+        $data->chain = $request->password;
+        $data->password = Hash::make($request->password);
+        $data->save();
+
+        // if ($data->end) {
+        //     $endDateTime = \Carbon\Carbon::parse($data->end);
+        //     $now = \Carbon\Carbon::now();
+
+        //     if ($now >= $endDateTime) {
+        //         event(new ReminderNotification($data));
+        //     }
+        // }
+
+        Alert::success('Berhasil', 'Data telah tersimpan.');
+        return redirect()->route('userpage');
+    }
+
+    public function importDatabase(Request $request)
+    {
+        $file = $request->file('file');
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        $nama_file = rand() . $file->getClientOriginalName();
+        // Lisensi::truncate();
+
+        $path = $file->storeAs('public/excel/', $nama_file);
+
+        $import = new LisensiImport();
+        Excel::import($import, $file);
+
+        Storage::delete($path);
+        return redirect()->back();
+    }
+
+    public function exportDatabase()
+    {
+        $data = Lisensi::all()->toArray();
+        return Excel::download(new LisensiExport($data), 'Lisensi.xlsx');
+    }
+
+    public function searchlisensi(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        $query = Lisensi::query();
+
+        if ($searchTerm) {
+            $query->where('nama_dokumen', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('start', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('end', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('reminder1', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('reminder2', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('reminder3', 'LIKE', '%' . $searchTerm . '%');
+        }
+
+        $data = $query->get();
+
+        return view('admin.partial.lisensi', ['data' => $data]);
+    }
+
+    public function searchUser(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        $query = User::query();
+
+        if ($searchTerm) {
+            $query->where('nik', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('nama', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('email', 'LIKE', '%' . $searchTerm . '%');
+        }
+
+        $data = $query->get();
+
+        return view('admin.partial.user', ['data' => $data]);
+    }
+
+    public function EditLisensi(Request $request)
+    {
+        $data = Lisensi::find($request->id);
+        // dd($request->newData);
+        // $data->nama_dokumen = $request->newData;
+        foreach ($request->newData as $fieldName => $fieldValue) {
+            $data->{$fieldName} = $fieldValue;
+        }
+
+
+        $data->save();
+        // dd($request->newData);
+
+        return redirect()->back();
     }
 
     /**
@@ -110,8 +226,24 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function destroy($id)
     {
-        //
+        $lisensi = Lisensi::find($id);
+        $lisensi->delete();
+        return redirect()->back();
+    }
+
+    public function userDestroy($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->back();
+    }
+
+    public function resetLisensi()
+    {
+        Lisensi::truncate();
+        return redirect()->back();
     }
 }

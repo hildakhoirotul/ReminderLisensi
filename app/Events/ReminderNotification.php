@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Lisensi;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -10,19 +11,23 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PostPublished
+class ReminderNotification
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $post;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($post)
+    public $lisensi;
+    public $name;
+    public $message;
+
+    public function __construct($name, $message)
     {
-        $this->post = $post;
+        $this->name = $name;
+        $this->message = $message;
     }
 
     /**
@@ -32,13 +37,7 @@ class PostPublished
      */
     public function broadcastOn()
     {
-        return new Channel('posts');
-    }
-
-    public function broadcastWith()
-    {
-        return [
-            'title' => $this->post->title,
-        ];
+        // return new PrivateChannel('reminder-' . $this->lisensi->id);
+        return ['notification'];
     }
 }

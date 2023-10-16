@@ -26,7 +26,7 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" class="background">
         <main class="py-4">
             @include('sweetalert::alert')
             @yield('content')
@@ -34,5 +34,21 @@
     </div>
 </body>
 <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
+<script>
+    function togglePasswordVisibility(icon) {
+        var passwordInput = icon.previousElementSibling;
+        var type = passwordInput.getAttribute('type');
+
+        if (type === 'password') {
+            passwordInput.setAttribute('type', 'text');
+            icon.classList.remove('bi-eye-slash-fill');
+            icon.classList.add('bi-eye-fill');
+        } else {
+            passwordInput.setAttribute('type', 'password');
+            icon.classList.remove('bi-eye-fill');
+            icon.classList.add('bi-eye-slash-fill');
+        }
+    }
+</script>
 
 </html>

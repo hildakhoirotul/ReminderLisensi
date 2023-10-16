@@ -619,6 +619,20 @@ table {
     border-bottom-color: #f0f2f5;
 }
 
+.table-responsive {
+    max-height: 500px;
+    overflow: hidden;
+    position: relative;
+    overflow-y: scroll;
+}
+
+.table-responsive thead {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 5;
+}
+
 .font-weight-bold {
     font-weight: 600 !important;
 }
@@ -741,6 +755,10 @@ table {
 
 /* Modal */
 /* Modal */
+.modal-backdrop{
+    background: rgba(0, 0, 0, 0.5);
+}
+
 .modal.fade .modal-dialog {
     transform: perspective(400px) rotate3d(0, 1, 0, -360deg);
     -webkit-transition: all 0.3s;
@@ -769,6 +787,7 @@ table {
     height: fit-content;
     width: 30rem;
 }
+
 /* 
 .modal-content .modal-header h5 {
     font-size: 12pt;
@@ -869,4 +888,30 @@ table {
 .registration-form .social-icons a:hover {
     text-decoration: none;
     opacity: 0.6;
+}
+
+/* Edit $ Delete */
+.btn-group .btn-danger {
+    padding: 5px 10px;
+    border-radius: unset;
+}
+
+/* Password Toggle */
+.password-container {
+    position: relative;
+}
+
+.password-text {
+    display: inline-block;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+}
+
+.toggle-password-icon {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    cursor: pointer;
 }

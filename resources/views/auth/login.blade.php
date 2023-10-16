@@ -20,12 +20,10 @@
                     <div class="form-field d-flex align-items-center">
                         <i class="bi bi-lock-fill"></i>
                         <input type="password" name="password" id="password" placeholder="Password">
+                        <i class="toggle-password-icon bi bi-eye-slash-fill" onclick="togglePasswordVisibility(this)"></i>
                     </div>
                     <button class="btn mt-3">Login</button>
                 </form>
-                <div class="text-center fs-6">
-                    <a href="#">Forget password?</a> or <a href="#">Sign up</a>
-                </div>
             </div>
             <!-- <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
