@@ -37,6 +37,7 @@ Route::controller(AdminController::class)->middleware('is_admin')->group(functio
     Route::post('/edit-lisensi', 'EditLisensi')->name('edit.lisensi');
     Route::post('/save-token', 'saveToken')->name('save.token');
     Route::post('/send-notif', 'sendNotif')->name('send.notif');
+    Route::post('/mark-as-read', 'markAsRead')->name('mark-as-read');
 });
 
 Route::controller(HomeController::class)->middleware('is_user')->group(function () {

@@ -81,38 +81,28 @@
 
         firebase.initializeApp(firebaseConfig);
         const messaging = firebase.messaging();
-
-        // var deviceToken = '{{ $deviceToken }}';
-
-        // var permissionRequested = localStorage.getItem('notificationPermissionRequested');
-
-        // if (deviceToken === null || deviceToken === '') {
-            // Device_token kosong dan izin belum pernah diminta
-            // if (permissionRequested === null ) {
-                // Tampilkan dialog konfirmasi
-                // if (confirm('Izinkan notifikasi?')) {
-                    // Pengguna mengizinkan, minta izin notifikasi
-                    messaging.requestPermission()
-                        .then(function() {
-                            return messaging.getToken()
-                                .then(function(token) {
-                                    console.log(token);
-                                    saveToken(token); // Simpan token ke server
-                                    // Tandai bahwa izin sudah diminta
-                                    // localStorage.setItem('notificationPermissionRequested', 'true');
-                                });
-                        })
-                        .catch(function(err) {
-                            console.log('User Chat Token Error' + err);
-                        });
-                // } else {
-                    // Pengguna tidak mengizinkan
-                    // console.log('Pengguna tidak mengizinkan notifikasi.');
-                    // Tandai bahwa izin sudah diminta
-                    // localStorage.setItem('notificationPermissionRequested', 'true');
-                // }
-            // }
-        // }
+        messaging.getToken()
+            .then(function(currentToken) {
+                if (currentToken) {
+                    // Token saat ini ada, simpan ke server jika diperlukan
+                    saveToken(currentToken);
+                } else {
+                    // Token saat ini belum ada, minta token baru
+                    messaging.onTokenRefresh(function() {
+                        messaging.getToken()
+                            .then(function(newToken) {
+                                console.log("Token yang diperbarui:", newToken);
+                                saveToken(newToken);
+                            })
+                            .catch(function(err) {
+                                console.log("Gagal mendapatkan token yang diperbarui:", err);
+                            });
+                    });
+                }
+            })
+            .catch(function(err) {
+                console.log('User Chat Token Error: ' + err);
+            });
 
         function saveToken(token) {
             $.ajaxSetup({
@@ -128,9 +118,7 @@
                     token: token
                 },
                 dataType: 'JSON',
-                success: function(response) {
-                    // alert('Token saved successfully.');
-                },
+                success: function(response) {},
                 error: function(err) {
                     console.log('User Chat Token Error' + err);
                 },
@@ -146,7 +134,24 @@
             new Notification(noteTitle, noteOptions);
         });
     </script>
+    <script>
+        document.getElementById('notifikasi-dropdown').addEventListener('shown.bs.dropdown', function() {
+            // Saat dropdown dibuka, cari elemen dengan atribut data-notif-id
+            var notifikasiElements = this.querySelectorAll('[data-notif-id]');
 
+            notifikasiElements.forEach(function(element) {
+                var notifikasiId = element.getAttribute('data-notif-id');
+
+                // Kirim notifikasiId ke server melalui AJAX
+                $.post('{{ route('mark-as-read') }}', {
+                        notifikasi_id: notifikasiId
+                    },
+                    function(data) {
+                        console.log(data.message); // Output pesan dari server
+                    });
+            });
+        });
+    </script>
 </body>
 
 </html>

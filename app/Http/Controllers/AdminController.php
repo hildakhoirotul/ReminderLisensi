@@ -29,23 +29,27 @@ class AdminController extends Controller
     {
         $count = Lisensi::count();
         $data = Lisensi::paginate(100);
-        $notif = Notifikasi::get();
-        return response()->view('admin.dashboard', compact('data', 'count', 'notif'));
+        $notif = Notifikasi::where('read', false)->get();
+        $countNotif = Notifikasi::where('read', false)->count();
+        return response()->view('admin.dashboard', compact('data', 'count', 'notif', 'countNotif'));
     }
 
     public function userPage()
     {
         $count = User::count();
         $data = User::paginate(100);
-        $notif = Notifikasi::get();
-        return response()->view('admin.user', compact('data', 'count', 'notif'));
+        $notif = Notifikasi::where('read', false)->get();
+        $countNotif = Notifikasi::where('read', false)->count();
+        return response()->view('admin.user', compact('data', 'count', 'notif', 'countNotif'));
     }
 
     public function notifikasi()
     {
-        $notif = Notifikasi::get();
+        $notif1 = Notifikasi::get();
+        $countNotif = Notifikasi::where('read', false)->count();
+        $notif = Notifikasi::where('read', false)->get();
 
-        $categorizedNotifikasi = $notif->map(function ($notifikasi) {
+        $categorizedNotifikasi = $notif1->map(function ($notifikasi) {
             $timeDifference = now()->diff($notifikasi->created_at);
             if ($timeDifference->d == 0) {
                 $notifikasi->category = 'Today';
@@ -53,7 +57,7 @@ class AdminController extends Controller
                 $notifikasi->category = 'Yesterday';
             } elseif ($timeDifference->d <= 7) {
                 $notifikasi->category = 'Last Week';
-            } elseif ($timeDifference->m == 0){
+            } elseif ($timeDifference->m == 0) {
                 $notifikasi->category = 'This Month';
             } else {
                 $notifikasi->category = 'Months ago';
@@ -62,7 +66,19 @@ class AdminController extends Controller
         });
 
         // dd($categorizedNotifikasi);
-        return response()->view('admin.notifikasi', compact('deviceToken', 'notif', 'categorizedNotifikasi'));
+        return response()->view('admin.notifikasi', compact('categorizedNotifikasi', 'countNotif', 'notif'));
+    }
+
+    public function markAsRead(Request $request)
+    {
+        $notifikasiId = $request->input('notifikasi_id');
+        $notifikasi = Notifikasi::find($notifikasiId);
+        if ($notifikasi) {
+            $notifikasi->read = true;
+            $notifikasi->save();
+        }
+        // Respon sesuai kebutuhan Anda, misalnya JSON response
+        return response()->json(['message' => 'Notifikasi ditandai sebagai dibaca']);
     }
 
     /**

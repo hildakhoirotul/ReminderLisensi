@@ -62,7 +62,10 @@ class SendReminder extends Command
                     "notification" => [
                         "title" => "License Reminder",
                         "body" => "Lisensi {$license->nama_dokumen} akan segera berakhir masa waktunya.",
-                    ]
+                    ],
+                    "data" => [ 
+                        "click_action" => "http://127.0.0.1:8000/notifications", 
+                    ],
                 ];
                 $dataString = json_encode($data);
 
