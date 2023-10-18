@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('nama');
             $table->string('email');
             $table->boolean('is_admin')->default(false);
+            $table->string('device_token')->nullable();
             $table->string('chain');
             $table->string('password');
             $table->rememberToken();

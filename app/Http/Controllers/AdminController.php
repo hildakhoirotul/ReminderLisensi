@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\RealTimeMessage;
 use App\Events\ReminderNotification;
 use App\Exports\LisensiExport;
 use App\Imports\LisensiImport;
 use App\Models\Lisensi;
+use App\Models\Notifikasi;
 use App\Models\User;
+use App\Notifications\RealTimeNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -24,19 +29,40 @@ class AdminController extends Controller
     {
         $count = Lisensi::count();
         $data = Lisensi::paginate(100);
-        return response()->view('admin.dashboard', compact('data', 'count'));
+        $notif = Notifikasi::get();
+        return response()->view('admin.dashboard', compact('data', 'count', 'notif'));
     }
 
     public function userPage()
     {
         $count = User::count();
         $data = User::paginate(100);
-        return response()->view('admin.user', compact('data', 'count'));
+        $notif = Notifikasi::get();
+        return response()->view('admin.user', compact('data', 'count', 'notif'));
     }
 
     public function notifikasi()
     {
-        return response()->view('admin.notifikasi');
+        $notif = Notifikasi::get();
+
+        $categorizedNotifikasi = $notif->map(function ($notifikasi) {
+            $timeDifference = now()->diff($notifikasi->created_at);
+            if ($timeDifference->d == 0) {
+                $notifikasi->category = 'Today';
+            } elseif ($timeDifference->d == 1) {
+                $notifikasi->category = 'Yesterday';
+            } elseif ($timeDifference->d <= 7) {
+                $notifikasi->category = 'Last Week';
+            } elseif ($timeDifference->m == 0){
+                $notifikasi->category = 'This Month';
+            } else {
+                $notifikasi->category = 'Months ago';
+            }
+            return $notifikasi;
+        });
+
+        // dd($categorizedNotifikasi);
+        return response()->view('admin.notifikasi', compact('deviceToken', 'notif', 'categorizedNotifikasi'));
     }
 
     /**
@@ -244,6 +270,46 @@ class AdminController extends Controller
     public function resetLisensi()
     {
         Lisensi::truncate();
+        return redirect()->back();
+    }
+
+    public function saveToken(Request $request)
+    {
+        $user = Auth::user();
+        $user->update(['device_token' => $request->token]);
+        // dd($request->token);
+        return response()->json(['token saved succesfully.']);
+    }
+
+    public function sendNotif(Request $request)
+    {
+        $firebaseToken = User::whereNotNull('device_token')->pluck('device_token')->all();
+        $SERVER_API_KEY = 'AAAA4ETAcyY:APA91bF2667ab6Sk4pHcdnP7xS6To_-v51baOvMN2gl6YoxUqLn9TSmblyzVJaMrS2oKvfTrwz52TM3EeMeMwbXcxV-M-8X8opjSesIX00Qm7-Lvp_cySTnMRWQ__eAJ9v8kMsiRBVfR';
+
+        $data = [
+            "registration_ids" => $firebaseToken,
+            "notification" => [
+                "title" => $request->title,
+                "body" => $request->body,
+            ]
+        ];
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
         return redirect()->back();
     }
 }

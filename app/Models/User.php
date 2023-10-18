@@ -22,6 +22,7 @@ class User extends Authenticatable
         'nama',
         'email',
         'is_admin',
+        'device_token',
         'chain',
         'password',
     ];

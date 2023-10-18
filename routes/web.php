@@ -35,6 +35,8 @@ Route::controller(AdminController::class)->middleware('is_admin')->group(functio
     Route::delete('/destroy/{id}', 'destroy')->name('lisensi.destroy');
     Route::delete('/destroy-user/{id}', 'userDestroy')->name('user.destroy');
     Route::post('/edit-lisensi', 'EditLisensi')->name('edit.lisensi');
+    Route::post('/save-token', 'saveToken')->name('save.token');
+    Route::post('/send-notif', 'sendNotif')->name('send.notif');
 });
 
 Route::controller(HomeController::class)->middleware('is_user')->group(function () {

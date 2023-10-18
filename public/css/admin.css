@@ -569,12 +569,48 @@ section {
     border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
 }
 
+.bg-gradient-primary {
+    background-image: linear-gradient(195deg, #EC407A 0%, #D81B60 100%);
+}
+
 .bg-gradient-info {
     background-image: linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
 }
 
-.bg-gradient-primary {
-    background-image: linear-gradient(195deg, #EC407A 0%, #D81B60 100%);
+.bg-gradient-faded-primary {
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(233, 30, 99, 0.6) 0, #c1134e 100%);
+}
+
+.bg-gradient-faded-success {
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(76, 175, 80, 0.6) 0, #3d8b40 100%);
+}
+
+.bg-gradient-faded-info {
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(26, 115, 232, 0.6) 0, #135cbc 100%);
+}
+
+.bg-gradient-faded-warning {
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(251, 140, 0, 0.6) 0, #c87000 100%);
+}
+
+.bg-gradient-faded-danger {
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(244, 67, 53, 0.6) 0, #e91d0d 100%);
+}
+
+.bg-gradient-faded-light {
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(240, 242, 245, 0.6) 0, #d1d7e1 100%);
+}
+
+.bg-gradient-faded-dark {
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(52, 71, 103, 0.6) 0, #233045 100%);
+}
+
+.bg-gradient-faded-white {
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(255, 255, 255, 0.6) 0, #e6e6e6 100%);
+}
+
+.bg-gradient-faded-dark-blue {
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(26, 35, 126, 0.6) 0, #111754 100%);
 }
 
 .shadow-primary {
@@ -747,15 +783,25 @@ table {
 }
 
 .box-body .time {
-    font-weight: 300;
+    font-weight: 200;
     font-style: italic;
     color: #989ca4;
-    font-size: 14px;
+    font-size: 12px;
+}
+
+.badge {
+    position: absolute;
+    top: 5px; 
+    right: 4px; 
+    background-color: red; 
+    color: white !important; 
+    border-radius: 50%; 
+    padding: 3px 6px; 
 }
 
 /* Modal */
 /* Modal */
-.modal-backdrop{
+.modal-backdrop {
     background: rgba(0, 0, 0, 0.5);
 }
 

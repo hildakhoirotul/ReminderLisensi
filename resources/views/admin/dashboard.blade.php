@@ -141,7 +141,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="lisensiTableBody">
-                                        @php $i=1 @endphp 
+                                        @php $i=1 @endphp
                                         @foreach($data as $datas)
                                         <tr data-id="{{ $datas->id }}">
                                             <td data-field="nomor">
@@ -385,8 +385,7 @@
                 }
             });
         }
-
+ 
     }
 </script>
-
 @endsection
