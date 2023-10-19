@@ -215,15 +215,11 @@ class AdminController extends Controller
     public function EditLisensi(Request $request)
     {
         $data = Lisensi::find($request->id);
-        // dd($request->newData);
-        // $data->nama_dokumen = $request->newData;
         foreach ($request->newData as $fieldName => $fieldValue) {
             $data->{$fieldName} = $fieldValue;
         }
 
-
         $data->save();
-        // dd($request->newData);
 
         return redirect()->back();
     }

@@ -24,18 +24,21 @@ firebase.initializeApp({
 Retrieve an instance of Firebase Messaging so that it can handle background messages.
 */
 const messaging = firebase.messaging();
-self.addEventListener("push", (event) => {
-    let response = event.data && event.data.text();
-    let title = JSON.parse(response).notification.title;
-    let body = JSON.parse(response).notification.body;
-    event.waitUntil(
-        self.registration.showNotification(title, { body, data: { url: JSON.parse(response).data.click_action } })
-    );
-});
 
-self.addEventListener('notificationclick', function(event) {
-    event.notification.close();
-    event.waitUntil(
-        clients.openWindow(event.notification.data.url)
+messaging.setBackgroundMessageHandler(function (payload) {
+    console.log(
+        "[firebase-messaging-sw.js] Received background message ",
+        payload,
+    );
+    /* Customize notification here */
+    const notificationTitle = "Background Message Title";
+    const notificationOptions = {
+        body: "Background Message body.",
+        icon: "/itwonders-web-logo.png",
+    };
+
+    return self.registration.showNotification(
+        notificationTitle,
+        notificationOptions,
     );
 });
