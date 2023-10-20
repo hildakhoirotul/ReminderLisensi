@@ -65,7 +65,6 @@ class AdminController extends Controller
             return $notifikasi;
         });
 
-        // dd($categorizedNotifikasi);
         return response()->view('admin.notifikasi', compact('categorizedNotifikasi', 'countNotif', 'notif'));
     }
 
@@ -217,6 +216,23 @@ class AdminController extends Controller
         $data = Lisensi::find($request->id);
         foreach ($request->newData as $fieldName => $fieldValue) {
             $data->{$fieldName} = $fieldValue;
+        }
+
+        $data->save();
+
+        return redirect()->back();
+    }
+
+    public function EditUser(Request $request)
+    {
+        $data = User::find($request->id);
+        foreach ($request->newData as $fieldName => $fieldValue) {
+            if ($fieldName === 'chain'){
+                $data->chain = $fieldValue;
+                $data->password = Hash::make($fieldValue);
+            } else {
+                $data->{$fieldName} = $fieldValue;
+            }
         }
 
         $data->save();

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Exports\LisensiExport;
 use App\Imports\LisensiImport;
 use App\Models\Lisensi;
+use App\Models\Notifikasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -31,12 +33,53 @@ class HomeController extends Controller
     {
         $count = Lisensi::count();
         $data = Lisensi::paginate(100);
-        return view('user.home', compact('data', 'count'));
+        $notif = Notifikasi::where('read', false)->get();
+        $countNotif = Notifikasi::where('read', false)->count();
+        return view('user.home', compact('data', 'count', 'notif', 'countNotif'));
     }
 
     public function notifikasi()
     {
-        return view('user.notifikasi');
+        $notif1 = Notifikasi::get();
+        $countNotif = Notifikasi::where('read', false)->count();
+        $notif = Notifikasi::where('read', false)->get();
+        $categorizedNotifikasi = $notif1->map(function ($notifikasi) {
+            $timeDifference = now()->diff($notifikasi->created_at);
+            if ($timeDifference->d == 0) {
+                $notifikasi->category = 'Today';
+            } elseif ($timeDifference->d == 1) {
+                $notifikasi->category = 'Yesterday';
+            } elseif ($timeDifference->d <= 7) {
+                $notifikasi->category = 'Last Week';
+            } elseif ($timeDifference->m == 0) {
+                $notifikasi->category = 'This Month';
+            } else {
+                $notifikasi->category = 'Months ago';
+            }
+            return $notifikasi;
+        });
+
+        return response()->view('user.notifikasi', compact('categorizedNotifikasi', 'countNotif', 'notif'));
+    }
+
+    public function markAs_Read(Request $request)
+    {
+        $notifikasiId = $request->input('notifikasi_id');
+        $notifikasi = Notifikasi::find($notifikasiId);
+        if ($notifikasi) {
+            $notifikasi->read = true;
+            $notifikasi->save();
+        }
+        // Respon sesuai kebutuhan Anda, misalnya JSON response
+        return response()->json(['message' => 'Notifikasi ditandai sebagai dibaca']);
+    }
+
+    public function save_token(Request $request)
+    {
+        $user = Auth::user();
+        $user->update(['device_token' => $request->token]);
+        // dd($request->token);
+        return response()->json(['token saved succesfully.']);
     }
 
     public function store(Request $request)
@@ -145,5 +188,4 @@ class HomeController extends Controller
 
         return redirect()->back();
     }
-
 }

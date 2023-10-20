@@ -86,28 +86,28 @@
                                     <tbody id="userTableBody">
                                         @php $i=1 @endphp
                                         @foreach($data as $datas)
-                                        <tr>
-                                            <td>
+                                        <tr data-id="{{ $datas->id }}">
+                                            <td data-field="nomor">
                                                 <p class="text-xs font-weight-bold mb-0">{{ $i++ }}</p>
                                             </td>
-                                            <td>
-                                                <p class="text-xs mb-0">{{ $datas->nik }}</p>
+                                            <td data-field="nik">
+                                                <p class="text-xs mb-0" data-nik="{{ $datas->nik }}">{{ $datas->nik }}</p>
                                             </td>
-                                            <td>
-                                                <p class="text-xs mb-0">{{ $datas->nama }}</p>
+                                            <td data-field="nama">
+                                                <p class="text-xs mb-0" data-nama="{{ $datas->nama }}">{{ $datas->nama }}</p>
                                             </td>
-                                            <td>
-                                                <p class="text-xs mb-0">{{ $datas->email }}</p>
+                                            <td data-field="email">
+                                                <p class="text-xs mb-0" data-email="{{ $datas->email }}">{{ $datas->email }}</p>
                                             </td>
-                                            <td>
+                                            <td data-field="chain">
                                                 <div class="password-container">
-                                                    <input type="password" class="password-text" value="{{ $datas->chain }}" readonly>
+                                                    <input type="password" class="password-text" data-chain="{{ $datas->chain }}" value="{{ $datas->chain }}" readonly>
                                                     <i class="toggle-password-icon bi bi-eye-slash-fill" onclick="togglePasswordVisibility(this)"></i>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td data-field="action">
                                                 <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
-                                                    <button type="button" class="btn btn-warning"><i class="bi bi-pen-fill"></i></button>
+                                                    <button type="button" class="btn btn-warning" onclick="startEditing(this)"><i class="bi bi-pen-fill"></i></button>
                                                     <form action="{{ route('user.destroy', ['id' => $datas->id]) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -182,5 +182,102 @@
     document.getElementById('searchUser').addEventListener('input', function() {
         filterData();
     });
+</script>
+<script>
+    function startEditing(button) {
+        var row = button.closest("tr");
+        var editButton = row.querySelector("button.btn-warning");
+        var saveButton = document.createElement("button");
+
+        var cells = row.querySelectorAll("td");
+        var editedData = {};
+
+        editedData.nik = row.querySelector("[data-field='nik'] p").dataset.nik;
+        editedData.nama = row.querySelector("[data-field='nama'] p").dataset.nama;
+        editedData.email = row.querySelector("[data-field='email'] p").dataset.email;
+        editedData.chain = row.querySelector("[data-field='chain'] input").dataset.chain;
+        for (let i = 0; i < cells.length; i++) {
+            let cell = cells[i];
+            let fieldName = cell.dataset.field;
+            if (fieldName !== 'nomor' && fieldName !== 'action') {
+                let input;
+                if (fieldName === 'chain') {
+                    input = document.createElement("input");
+                    input.type = "text";
+                    input.value = editedData.chain;
+                    input.dataset.field = fieldName;
+                } else {
+                    input = document.createElement("input");
+                    input.type = "text";
+                    input.value = cell.innerText;
+                    input.dataset.field = fieldName;
+                }
+
+                input.addEventListener('input', function(event) {
+                    let field = event.target.dataset.field;
+                    editedData[field] = input.value;
+                });
+
+                input.classList.add('edit-input');
+
+                cell.innerHTML = "";
+                cell.appendChild(input);
+                cell.contentEditable = true;
+            }
+        }
+
+        saveButton.type = "button";
+        saveButton.className = "btn btn-success";
+        saveButton.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+        saveButton.onclick = function() {
+            saveChanges(row, editedData);
+        };
+
+
+        editButton.replaceWith(saveButton);
+
+        function saveChanges(row, editedData) {
+            var dataId = row.dataset.id;
+            console.log(editedData);
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url('edit-user') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: dataId,
+                    newData: editedData
+                },
+                success: function(response) {
+                    var saveButton = row.querySelector("button.btn-success");
+                    var editButton = document.createElement("button");
+                    editButton.type = "button";
+                    editButton.className = "btn btn-warning";
+                    editButton.innerHTML = '<i class="bi bi-pen-fill"></i>';
+                    var cells = row.querySelectorAll("td");
+                    for (let i = 0; i < cells.length; i++) {
+                        let cell = cells[i];
+                        let fieldName = cell.dataset.field;
+                        if (fieldName !== 'nomor' && fieldName !== 'action') {
+                            if (fieldName !== 'chain') {
+                                cell.innerHTML = "<p class='text-xs mb-0' data-" + fieldName + "='" + editedData[fieldName] + "'>" + editedData[fieldName] + "</p>";
+                            } else {
+                                cell.innerHTML = "<input type='password' class='password-text' data-" + fieldName + "='" + editedData[fieldName] + "' value='" + editedData[fieldName] + "' readonly>" + "<i class='toggle-password-icon bi bi-eye-slash-fill' onclick='togglePasswordVisibility(this)'></i>";
+                            }
+                        }
+                    }
+                    editButton.onclick = function() {
+                        startEditing(editButton);
+                    };
+
+                    saveButton.replaceWith(editButton);
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        }
+
+    }
 </script>
 @endsection

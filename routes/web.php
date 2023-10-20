@@ -35,6 +35,7 @@ Route::controller(AdminController::class)->middleware('is_admin')->group(functio
     Route::delete('/destroy/{id}', 'destroy')->name('lisensi.destroy');
     Route::delete('/destroy-user/{id}', 'userDestroy')->name('user.destroy');
     Route::post('/edit-lisensi', 'EditLisensi')->name('edit.lisensi');
+    Route::post('/edit-user', 'EditUser')->name('edit.user');
     Route::post('/save-token', 'saveToken')->name('save.token');
     Route::post('/send-notif', 'sendNotif')->name('send.notif');
     Route::post('/mark-as-read', 'markAsRead')->name('mark-as-read');
@@ -50,6 +51,8 @@ Route::controller(HomeController::class)->middleware('is_user')->group(function 
     Route::get('/search-database', 'searchlisensi')->name('user.search.lisensi');
     Route::delete('/destroy-lisensi/{id}', 'destroy')->name('user.lisensi.destroy');
     Route::post('/user-edit-lisensi', 'EditLisensi')->name('user.edit.lisensi');
+    Route::post('/markAs-read', 'markAs_Read')->name('markAs-read');
+    Route::post('/saveToken', 'save_token')->name('user.save.token');
 });
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('is_user')->name('home');

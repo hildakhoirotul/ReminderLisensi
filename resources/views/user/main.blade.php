@@ -37,20 +37,29 @@
     <header class="p-1 mb-3 border-bottom header">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-end justify-content-lg-end">
-                <div class="dropdown text-end">
+                <div id="notifikasi-dropdown" class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-bell-fill"></i>
+                        @if(!empty($countNotif))
+                        <span class="badge">{{ $countNotif }}</span>
+                        @endif
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end text-small">
-                        <li><a class="dropdown-item" href="#">Notifikasi 1</a></li>
+                    <ul class="dropdown-menu dropdown-menu-end notifikasi text-small py-0">
+                        @php $i=1 @endphp
+                        @if(!empty($countNotif))
+                        @foreach($notif as $notifikasi)
                         <li>
-                            <hr class="dropdown-divider">
+                            <div class="dropdown-item d-flex align-items-center" data-notif-id="{{ $notifikasi->id }}"><i class="bi bi-chat-quote"></i><span style="font-weight: 800;">Reminder,</span>&nbsp;lisensi {{ $notifikasi->nama_dokumen }}</div>
                         </li>
-                        <li><a class="dropdown-item" href="#">Notifikasi 2</a></li>
+                        @endforeach
                         <li>
-                            <hr class="dropdown-divider">
+                            <a class="dropdown-item text-center" href="{{ route('notif') }}">Lihat Selengkapnya</a>
                         </li>
-                        <li><a class="dropdown-item" href="#">Notifikasi 3</a></li>
+                        @else
+                        <li>
+                            <div class="dropdown-item">Belum ada pesan saat ini ...</div>
+                        </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="dropdown text-end">
@@ -110,7 +119,92 @@
     <script src="{{ asset('js/main.js') }}"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyCBdAE9wpP_a-SZXQFVECwG5mG8tjzkj3A",
+            authDomain: "reminder-9c0db.firebaseapp.com",
+            databaseURL: "https://reminder-9c0db-default-rtdb.firebaseio.com",
+            projectId: "reminder-9c0db",
+            storageBucket: "reminder-9c0db.appspot.com",
+            messagingSenderId: "963226137382",
+            appId: "1:963226137382:web:5db0be89b7c0f84f3547e7",
+            measurementId: "G-6QDMHQ9WS7"
+        };
 
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+        messaging.getToken()
+            .then(function(currentToken) {
+                if (currentToken) {
+                    // Token saat ini ada, simpan ke server jika diperlukan
+                    saveToken(currentToken);
+                } else {
+                    // Token saat ini belum ada, minta token baru
+                    messaging.onTokenRefresh(function() {
+                        messaging.getToken()
+                            .then(function(newToken) {
+                                console.log("Token yang diperbarui:", newToken);
+                                saveToken(newToken);
+                            })
+                            .catch(function(err) {
+                                console.log("Gagal mendapatkan token yang diperbarui:", err);
+                            });
+                    });
+                }
+            })
+            .catch(function(err) {
+                console.log('User Chat Token Error: ' + err);
+            });
+
+        function saveToken(token) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: '{{ route("user.save.token") }}',
+                type: 'POST',
+                data: {
+                    token: token
+                },
+                dataType: 'JSON',
+                success: function(response) {},
+                error: function(err) {
+                    console.log('User Chat Token Error' + err);
+                },
+            });
+        }
+
+        messaging.onMessage(function(payload) {
+            const noteTitle = payload.notification.title;
+            const noteOptions = {
+                body: payload.notification.body,
+                icon: payload.notification.icon,
+            };
+            new Notification(noteTitle, noteOptions);
+        });
+    </script>
+    <script>
+        document.getElementById('notifikasi-dropdown').addEventListener('shown.bs.dropdown', function() {
+            // Saat dropdown dibuka, cari elemen dengan atribut data-notif-id
+            var notifikasiElements = this.querySelectorAll('[data-notif-id]');
+
+            notifikasiElements.forEach(function(element) {
+                var notifikasiId = element.getAttribute('data-notif-id');
+
+                // Kirim notifikasiId ke server melalui AJAX
+                $.post('{{ route('markAs-read') }}', {
+                        notifikasi_id: notifikasiId
+                    },
+                    function(data) {
+                        console.log(data.message); // Output pesan dari server
+                    });
+            });
+        });
+    </script>
 </body>
 
 </html>

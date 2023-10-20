@@ -141,29 +141,29 @@
                                         </tr>
                                     </thead>
                                     <tbody id="lisensiTableBody">
-                                        @php $i=1 @endphp 
+                                        @php $i=1 @endphp
                                         @foreach($data as $datas)
                                         <tr data-id="{{ $datas->id }}">
                                             <td data-field="nomor">
                                                 <p class="text-xs font-weight-bold mb-0">{{ $i++ }}</p>
                                             </td>
                                             <td data-field="nama_dokumen">
-                                                <p class="text-xs mb-0 text-start">{{ $datas->nama_dokumen }}</p>
+                                                <p class="text-xs mb-0 text-start" data-nama-dokumen="{{ $datas->nama_dokumen}}">{{ $datas->nama_dokumen }}</p>
                                             </td>
                                             <td data-field="start">
-                                                <p class="text-xs mb-0">{{ \Carbon\Carbon::parse($datas->start)->format('d F Y') }}</p>
+                                                <p class="text-xs mb-0" data-start="{{ $datas->start }}">{{ $datas->start }}</p>
                                             </td>
                                             <td data-field="end">
-                                                <p class="text-xs mb-0">{{ \Carbon\Carbon::parse($datas->end)->format('d F Y') }}</p>
+                                                <p class="text-xs mb-0" data-end="{{ $datas->end }}">{{ $datas->end }}</p>
                                             </td>
                                             <td data-field="reminder1">
-                                                <p class="text-xs mb-0">{{ \Carbon\Carbon::parse($datas->reminder1)->format('d F Y') }}</p>
+                                                <p class="text-xs mb-0" data-reminder1="{{ $datas->reminder1 }}">{{ $datas->reminder1 }}</p>
                                             </td>
                                             <td data-field="reminder2">
-                                                <p class="text-xs mb-0">{{ \Carbon\Carbon::parse($datas->reminder2)->format('d F Y') }}</p>
+                                                <p class="text-xs mb-0" data-reminder2="{{ $datas->reminder2 }}">{{ $datas->reminder2 }}</p>
                                             </td>
                                             <td data-field="reminder3">
-                                                <p class="text-xs mb-0">{{ \Carbon\Carbon::parse($datas->reminder3)->format('d F Y') }}</p>
+                                                <p class="text-xs mb-0" data-reminder3="{{ $datas->reminder3 }}">{{ $datas->reminder3 }}</p>
                                             </td>
                                             <td data-field="action">
                                                 <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
@@ -261,6 +261,13 @@
 
         var cells = row.querySelectorAll("td");
         var editedData = {};
+
+        editedData.nama_dokumen = row.querySelector("[data-field='nama_dokumen'] p").dataset.namaDokumen;
+        editedData.start = row.querySelector("[data-field='start'] p").dataset.start;
+        editedData.end = row.querySelector("[data-field='end'] p").dataset.end;
+        editedData.reminder1 = row.querySelector("[data-field='reminder1'] p").dataset.reminder1;
+        editedData.reminder2 = row.querySelector("[data-field='reminder2'] p").dataset.reminder2;
+        editedData.reminder3 = row.querySelector("[data-field='reminder3'] p").dataset.reminder3;
         for (let i = 0; i < cells.length; i++) {
             let cell = cells[i];
             let fieldName = cell.dataset.field;
@@ -269,18 +276,21 @@
                 if (fieldName !== 'nama_dokumen') {
                     input = document.createElement("input");
                     input.type = "date";
-                    input.value = cell.dataset.value;
+                    input.value = cell.innerText;
+                    input.dataset.field = fieldName;
                 } else {
                     input = document.createElement("input");
-                    input.type = "text"; // Menggunakan input biasa untuk nama_dokumen
+                    input.type = "text";
+                    input.value = cell.innerText;
+                    input.dataset.field = fieldName;
                 }
-                input.value = cell.innerText;
-                input.dataset.field = fieldName;
 
                 input.addEventListener('input', function(event) {
                     let field = event.target.dataset.field;
                     editedData[field] = input.value;
                 });
+
+                input.classList.add('edit-input');
 
                 cell.innerHTML = "";
                 cell.appendChild(input);
@@ -316,6 +326,18 @@
                     editButton.type = "button";
                     editButton.className = "btn btn-warning";
                     editButton.innerHTML = '<i class="bi bi-pen-fill"></i>';
+                    var cells = row.querySelectorAll("td");
+                    for (let i = 0; i < cells.length; i++) {
+                        let cell = cells[i];
+                        let fieldName = cell.dataset.field;
+                        if (fieldName !== 'nomor' && fieldName !== 'action') {
+                            if (fieldName !== 'nama_dokumen') {
+                                cell.innerHTML = "<p class='text-xs mb-0' data-" + fieldName + "='" + editedData[fieldName] + "'>" + editedData[fieldName] + "</p>";
+                            } else {
+                                cell.innerHTML = "<p class='text-xs mb-0 text-start' data-" + fieldName + "='" + editedData[fieldName] + "'>" + editedData[fieldName] + "</p>";
+                            }
+                        }
+                    }
                     editButton.onclick = function() {
                         startEditing(editButton);
                     };
