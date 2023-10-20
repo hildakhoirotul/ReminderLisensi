@@ -83,7 +83,7 @@ class SendReminder extends Command
 
                 $response = curl_exec($ch);
                 // Notifikasi yang muncul di email
-                if (!empty($firebaseToken)) {
+                // if (!empty($firebaseToken)) {
                     try {
                         foreach ($emails as $email) {
                             Mail::to($email)->send(new ReminderMail($email, $license));
@@ -99,7 +99,7 @@ class SendReminder extends Command
                         'end' => $license->end,
                         'read' => 0,
                     ]);
-                }
+                // }
             }
         }
     }
