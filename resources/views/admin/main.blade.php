@@ -18,15 +18,15 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="css/aos.css" rel="stylesheet">
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="css/glightbox.min.css" rel="stylesheet">
-    <link href="css/swiper-bundle.min.css" rel="stylesheet">
+    <link href="{{ asset('css/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/swiper-bundle.min.css') }}" rel="stylesheet">
 
     <!-- Datatables -->
     <!-- Template Main CSS File -->
-    <link href="css/admin.css" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -49,17 +49,17 @@
 
     <!-- Vendor JS Files -->
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
-    <script src="js/purecounter_vanilla.js"></script>
-    <script src="js/aos.js"></script>
+    <script src="{{ asset('js/purecounter_vanilla.js') }}"></script>
+    <script src="{{ asset('js/aos.js') }}"></script>
     <script src="{{ asset('bootstrap-5.3.2/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('bootstrap-5.3.2/js/bootstrap.min.js') }}"></script>
     <!-- <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script> -->
-    <script src="js/glightbox.min.js"></script>
-    <script src="js/isotope.pkgd.min.js"></script>
-    <script src="js/swiper-bundle.min.js"></script>
-    <script src="js/typed.umd.js"></script>
-    <script src="js/noframework.waypoints.js"></script>
-    <script src="js/validate.js"></script>
+    <script src="{{ asset('js/glightbox.min.js') }}"></script>
+    <script src="{{ asset('js/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('js/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('js/typed.umd.js') }}"></script>
+    <script src="{{ asset('js/noframework.waypoints.js') }}"></script>
+    <script src="{{ asset('js/validate.js') }}"></script>
     <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script> -->

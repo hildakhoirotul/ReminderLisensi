@@ -17,15 +17,15 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="css/aos.css" rel="stylesheet">
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="css/glightbox.min.css" rel="stylesheet">
-    <link href="css/swiper-bundle.min.css" rel="stylesheet">
+    <link href="{{ asset('css/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/swiper-bundle.min.css') }}" rel="stylesheet">
     <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
 
     <!-- Template Main CSS File -->
-    <link href="css/admin.css" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -79,8 +79,8 @@
     <header id="header" class="d-flex flex-column justify-content-center">
         <nav id="navbar" class="navbar nav-menu">
             <ul>
-                <li><a href="/home" class="nav-link scrollto active"><i class="bi bi-table"></i><span>Database</span></a></li>
-                <li><a href="/notification" class="nav-link scrollto"><i class="bi bi-bell"></i><span>Notifikasi</span></a></li>
+                <li><a href="{{ route('home') }}" data-link="/home" class="nav-link scrollto active"><i class="bi bi-table"></i><span>Database</span></a></li>
+                <li><a href="{{ route('notif') }}" data-link="/notification" class="nav-link scrollto"><i class="bi bi-bell"></i><span>Notifikasi</span></a></li>
             </ul>
         </nav>
         <!-- .nav-menu -->
@@ -95,16 +95,16 @@
 
     <!-- Vendor JS Files -->
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
-    <script src="js/purecounter_vanilla.js"></script>
-    <script src="js/aos.js"></script>
+    <script src="{{ asset('js/purecounter_vanilla.js') }}"></script>
+    <script src="{{ asset('js/aos.js') }}"></script>
     <script src="{{ asset('bootstrap-5.3.2/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="js/glightbox.min.js"></script>
-    <script src="js/isotope.pkgd.min.js"></script>
-    <script src="js/swiper-bundle.min.js"></script>
-    <script src="js/typed.umd.js"></script>
-    <script src="js/noframework.waypoints.js"></script>
-    <script src="js/validate.js"></script>
+    <script src="{{ asset('js/glightbox.min.js') }}"></script>
+    <script src="{{ asset('js/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('js/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('js/typed.umd.js') }}"></script>
+    <script src="{{ asset('js/noframework.waypoints.js') }}"></script>
+    <script src="{{ asset('js/validate.js') }}"></script>
 
     <!-- Template Main JS File -->
     <script src="{{ asset('js/main.js') }}"></script>

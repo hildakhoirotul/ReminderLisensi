@@ -39,16 +39,15 @@
    */
   // Fungsi untuk menentukan tautan navbar yang aktif
   function setActiveNavbarLink() {
-    const currentPath = window.location.pathname; // Mendapatkan path halaman saat ini
+    const currentPath = window.location.pathname;
 
-    // Loop melalui semua tautan navbar
     const navbarLinks = document.querySelectorAll('#navbar .nav-link');
     navbarLinks.forEach(navbarLink => {
-      const linkPath = navbarLink.getAttribute('href');
+      const linkPath = navbarLink.getAttribute('data-link');
       if (currentPath === linkPath) {
-        navbarLink.classList.add('active'); // Tambahkan kelas "active" jika path cocok
+        navbarLink.classList.add('active');
       } else {
-        navbarLink.classList.remove('active'); // Hapus kelas "active" jika tidak cocok
+        navbarLink.classList.remove('active');
       }
     });
   }
