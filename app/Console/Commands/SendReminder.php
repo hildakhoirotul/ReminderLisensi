@@ -47,9 +47,9 @@ class SendReminder extends Command
     {
         $emails = User::pluck('email')->all();
         $licenses = Lisensi::where(function ($query) {
-            $query->where('end', now()->addMonths(3)->format('Y-m-d'))
-                ->orWhere('end', now()->addMonths(6)->format('Y-m-d'))
-                ->orWhere('end', now()->addYear()->format('Y-m-d'));
+            $query->where('reminder1', now()->format('Y-m-d'))
+                ->orWhere('reminder2', now()->format('Y-m-d'))
+                ->orWhere('reminder3', now()->format('Y-m-d'));
         })->get();
 
         if ($licenses->count() > 0) {
