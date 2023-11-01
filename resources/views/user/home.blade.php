@@ -26,18 +26,22 @@
                                 <label for="end">END</label>
                                 <input type="date" class="form-control item" name="end" id="end">
                             </div>
+                            <div class="reminder-error" id="end-error"></div>
                             <div class="form-group">
                                 <label for="reminder1">REMINDER 1</label>
                                 <input type="date" class="form-control item" name="reminder1" id="reminder1">
                             </div>
+                            <div class="reminder-error" id="reminder1-error"></div>
                             <div class="form-group">
                                 <label for="reminder2">REMINDER 2</label>
                                 <input type="date" class="form-control item" name="reminder2" id="reminder2">
                             </div>
+                            <div class="reminder-error" id="reminder2-error"></div>
                             <div class="form-group">
                                 <label for="reminder3">REMINDER 3</label>
                                 <input type="date" class="form-control item" name="reminder3" id="reminder3">
                             </div>
+                            <div class="reminder-error" id="reminder3-error"></div>
                             <div class="form-group d-flex justify-content-center">
                                 <button type="submit" class="btn btn-block create-account">Simpan</button>
                                 <button type="button" class="btn btn-block btn-cancel ms-2" data-bs-dismiss="modal">Cancel</button>
@@ -148,7 +152,7 @@
                                                 <p class="text-xs font-weight-bold mb-0">{{ $i++ }}</p>
                                             </td>
                                             <td data-field="nama_dokumen">
-                                                <p class="text-xs mb-0 text-start" data-nama-dokumen="{{ $datas->nama_dokumen}}">{{ $datas->nama_dokumen }}</p>
+                                                <p class="text-xs mb-0 text-start" data-dokumen="{{ $datas->nama_dokumen}}">{{ $datas->nama_dokumen }}</p>
                                             </td>
                                             <td data-field="start">
                                                 <p class="text-xs mb-0" data-start="{{ $datas->start }}">{{ $datas->start }}</p>
@@ -262,7 +266,7 @@
         var cells = row.querySelectorAll("td");
         var editedData = {};
 
-        editedData.nama_dokumen = row.querySelector("[data-field='nama_dokumen'] p").dataset.namaDokumen;
+        editedData.nama_dokumen = row.querySelector("[data-field='nama_dokumen'] p").dataset.dokumen;
         editedData.start = row.querySelector("[data-field='start'] p").dataset.start;
         editedData.end = row.querySelector("[data-field='end'] p").dataset.end;
         editedData.reminder1 = row.querySelector("[data-field='reminder1'] p").dataset.reminder1;
@@ -310,6 +314,31 @@
 
         function saveChanges(row, editedData) {
             var dataId = row.dataset.id;
+            var start = new Date(editedData.start);
+            var end = new Date(editedData.end);
+            var reminder1 = new Date(editedData.reminder1);
+            var reminder2 = new Date(editedData.reminder2);
+            var reminder3 = new Date(editedData.reminder3);
+
+            if (end <= start) {
+                alert('Oops!, End tidak bisa lebih awal dari Start.');
+                return;
+            }
+
+            if (reminder1 <= start) {
+                alert('Oops!, Reminder 1 tidak bisa lebih awal dari Start.');
+                return;
+            }
+
+            if (reminder2 <= reminder1) {
+                alert('Oops!, Reminder 2 tidak bisa lebih awal dari Reminder 1.');
+                return;
+            }
+
+            if (reminder3 <= reminder2) {
+                alert('Oops!, Reminder 3 tidak bisa lebih awal dari Reminder 2.');
+                return;
+            }
             console.log(editedData);
 
             $.ajax({
@@ -352,5 +381,44 @@
 
     }
 </script>
+<script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#start, #end, #reminder1, #reminder2, #reminder3').on('change', function() {
+            var start = new Date($('#start').val());
+            var end = new Date($('#end').val());
+            var reminder1 = new Date($('#reminder1').val());
+            var reminder2 = new Date($('#reminder2').val());
+            var reminder3 = new Date($('#reminder3').val());
 
+            if (end <= start) {
+                $('#end').val(''); // Hapus tanggal jika tidak valid
+                $('#end-error').text('Oops!, End tidak bisa lebih awal dari Start.');
+            } else {
+                $('#end-error').text(''); // Hapus pesan peringatan jika valid
+            }
+
+            if (reminder1 <= start) {
+                $('#reminder1').val(''); // Hapus tanggal jika tidak valid
+                $('#reminder1-error').text('Oops!, Reminder 1 tidak bisa lebih awal dari Start.');
+            } else {
+                $('#reminder1-error').text(''); // Hapus pesan peringatan jika valid
+            }
+
+            if (reminder2 <= reminder1) {
+                $('#reminder2').val(''); // Hapus tanggal jika tidak valid
+                $('#reminder2-error').text('Oops!, Reminder 2 tidak bisa lebih awal dari Reminder 1.');
+            } else {
+                $('#reminder2-error').text(''); // Hapus pesan peringatan jika valid
+            }
+
+            if (reminder3 <= reminder2) {
+                $('#reminder3').val(''); // Hapus tanggal jika tidak valid
+                $('#reminder3-error').text('Oops!, Reminder 3 tidak bisa lebih awal dari Reminder 2.');
+            } else {
+                $('#reminder3-error').text(''); // Hapus pesan peringatan jika valid
+            }
+        });
+    });
+</script>
 @endsection

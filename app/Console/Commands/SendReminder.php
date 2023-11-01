@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\ReminderEvent;
 use App\Mail\ReminderMail;
 use Illuminate\Console\Command;
 use App\Models\Lisensi;
@@ -54,53 +55,65 @@ class SendReminder extends Command
 
         if ($licenses->count() > 0) {
             // Notifikasi yang muncul di desktop
-            $firebaseToken = User::whereNotNull('device_token')->pluck('device_token')->all();
-            $SERVER_API_KEY = 'AAAA4ETAcyY:APA91bF2667ab6Sk4pHcdnP7xS6To_-v51baOvMN2gl6YoxUqLn9TSmblyzVJaMrS2oKvfTrwz52TM3EeMeMwbXcxV-M-8X8opjSesIX00Qm7-Lvp_cySTnMRWQ__eAJ9v8kMsiRBVfR';
+            // $firebaseToken = User::whereNotNull('device_token')->pluck('device_token')->all();
+            // $SERVER_API_KEY = 'AAAA4ETAcyY:APA91bF2667ab6Sk4pHcdnP7xS6To_-v51baOvMN2gl6YoxUqLn9TSmblyzVJaMrS2oKvfTrwz52TM3EeMeMwbXcxV-M-8X8opjSesIX00Qm7-Lvp_cySTnMRWQ__eAJ9v8kMsiRBVfR';
 
             foreach ($licenses as $license) {
-                $data = [
-                    "registration_ids" => $firebaseToken,
-                    "notification" => [
-                        "title" => "License Reminder",
-                        "body" => "Lisensi {$license->nama_dokumen} akan segera berakhir masa waktunya.",
-                    ],
-                ];
-                $dataString = json_encode($data);
+                event(new ReminderEvent($license->nama_dokumen));
 
-                $headers = [
-                    'Authorization: key=' . $SERVER_API_KEY,
-                    'Content-Type: application/json',
-                ];
+                $response = Http::post('http://localhost:3000/api/posts/store', [
+                    'title' => $license->nama_dokumen,
+                    'content' => 'akan segera berakhir',
+                ]);
 
-                $ch = curl_init();
+                Log::info($response);
+                //     $data = [
+                //         "registration_ids" => $firebaseToken,
+                //         "notification" => [
+                //             "title" => "License Reminder",
+                //             "body" => "Lisensi {$license->nama_dokumen} akan segera berakhir masa waktunya.",
+                //         ],
+                //         "data" => [
+                //             "click_action" => "http://127.0.0.1:8000/notifications"
+                //         ]
+                //     ];
+                //     $dataString = json_encode($data);
 
-                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+                //     $headers = [
+                //         'Authorization: key=' . $SERVER_API_KEY,
+                //         'Content-Type: application/json',
+                //     ];
 
-                $response = curl_exec($ch);
+                //     $ch = curl_init();
+
+                //     curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                //     curl_setopt($ch, CURLOPT_POST, true);
+                //     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                //     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                //     curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+                //     $response = curl_exec($ch);
                 // Notifikasi yang muncul di email
                 // if (!empty($firebaseToken)) {
-                    try {
-                        foreach ($emails as $email) {
-                            Mail::to($email)->send(new ReminderMail($email, $license));
-                        }
-                    } catch (\Exception $e) {
-                        report($e);
-                        $this->info('Gagal mengirim email');
-                    }
-                    // Notifikasi yang muncul di halaman notifikasi
-                    Notifikasi::create([
-                        'nama_dokumen' => $license->nama_dokumen,
-                        'start' => $license->start,
-                        'end' => $license->end,
-                        'read' => 0,
-                    ]);
+                // try {
+                //     foreach ($emails as $email) {
+                //         Mail::to($email)->send(new ReminderMail($email, $license));
+                //     }
+                // } catch (\Exception $e) {
+                //     report($e);
+                //     $this->info('Gagal mengirim email');
                 // }
+                // Notifikasi yang muncul di halaman notifikasi
+                // Notifikasi::create([
+                //     'nama_dokumen' => $license->nama_dokumen,
+                //     'start' => $license->start,
+                //     'end' => $license->end,
+                //     'read' => 0,
+                // ]);
+
             }
+            // }
         }
     }
 }

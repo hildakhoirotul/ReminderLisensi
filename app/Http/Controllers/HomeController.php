@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\LisensiExport;
 use App\Imports\LisensiImport;
+use App\Jobs\LisensiImport as JobsLisensiImport;
 use App\Models\Lisensi;
 use App\Models\Notifikasi;
 use Illuminate\Http\Request;
@@ -112,7 +113,7 @@ class HomeController extends Controller
         // }
 
         Alert::success('Berhasil', 'Data telah tersimpan.');
-        return redirect()->route('dashboard');
+        return redirect()->route('home');
     }
 
     public function importDatabase(Request $request)
@@ -127,10 +128,11 @@ class HomeController extends Controller
 
         $path = $file->storeAs('public/excel/', $nama_file);
 
-        $import = new LisensiImport();
-        Excel::import($import, $file);
+        JobsLisensiImport::dispatch($path)->onQueue('impor_lisensi');
+        // $import = new LisensiImport();
+        // Excel::import($import, $file);
 
-        Storage::delete($path);
+        // Storage::delete($path);
         return redirect()->back();
     }
 

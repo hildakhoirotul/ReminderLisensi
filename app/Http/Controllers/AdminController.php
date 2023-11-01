@@ -6,6 +6,7 @@ use App\Events\RealTimeMessage;
 use App\Events\ReminderNotification;
 use App\Exports\LisensiExport;
 use App\Imports\LisensiImport;
+use App\Jobs\LisensiImport as JobsLisensiImport;
 use App\Models\Lisensi;
 use App\Models\Notifikasi;
 use App\Models\User;
@@ -106,15 +107,6 @@ class AdminController extends Controller
         $data->reminder3 = $request->reminder3;
         $data->save();
 
-        // if ($data->end) {
-        //     $endDateTime = \Carbon\Carbon::parse($data->end);
-        //     $now = \Carbon\Carbon::now();
-
-        //     if ($now >= $endDateTime) {
-        //         event(new ReminderNotification($data));
-        //     }
-        // }
-
         Alert::success('Berhasil', 'Data telah tersimpan.');
         return redirect()->route('dashboard');
     }
@@ -160,11 +152,12 @@ class AdminController extends Controller
         // Lisensi::truncate();
 
         $path = $file->storeAs('public/excel/', $nama_file);
+        JobsLisensiImport::dispatch($path)->onQueue('impor_lisensi');
 
-        $import = new LisensiImport();
-        Excel::import($import, $file);
+        // $import = new LisensiImport();
+        // Excel::import($import, $file);
 
-        Storage::delete($path);
+        // Storage::delete($path);
         return redirect()->back();
     }
 

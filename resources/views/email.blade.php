@@ -131,9 +131,9 @@
                                                     <tr>
                                                         <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Cabin',sans-serif;" align="left">
 
-                                                            <div style="font-size: 14px; color: #afb0c7; line-height: 170%; text-align: center; word-wrap: break-word;">
+                                                            <!-- <div style="font-size: 14px; color: #afb0c7; line-height: 170%; text-align: center; word-wrap: break-word;">
                                                                 <p style="font-size: 14px; line-height: 170%;"><span style="font-size: 14px; line-height: 23.8px;">View Email in Browser</span></p>
-                                                            </div>
+                                                            </div> -->
 
                                                         </td>
                                                     </tr>
@@ -175,8 +175,8 @@
                                                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                                                 <tr>
                                                                     <td style="padding-right: 0px;padding-left: 0px;" align="center">
-
-                                                                        <img align="center" border="0" src="https://cdn.templates.unlayer.com/assets/1597218650916-xxxxc.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 26%;max-width: 150.8px;" width="150.8" />
+                                                                        <!-- <img align="center" border="0" src="https://cdn.templates.unlayer.com/assets/1597218650916-xxxxc.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 26%;max-width: 150.8px;" width="150.8" /> -->
+                                                                        <!-- <img align="center" border="0" src="https://img.icons8.com/plasticine/100/000000/new-post--v2.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 26%;max-width: 150.8px;" width="100" /> -->
 
                                                                     </td>
                                                                 </tr>

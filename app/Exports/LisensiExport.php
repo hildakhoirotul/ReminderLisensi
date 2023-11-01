@@ -54,9 +54,9 @@ class LisensiExport implements FromArray, WithHeadings, WithMapping, WithStyles
                 $row[$key] = '-';
             }
 
-            if (in_array($key, ['start', 'end', 'reminder1', 'reminder2', 'reminder3']) && $value !== '-') {
-                $row[$key] = Carbon::createFromFormat('Y-m-d', $value)->format('d M Y');
-            }
+            // if (in_array($key, ['start', 'end', 'reminder1', 'reminder2', 'reminder3']) && $value !== '-') {
+            //     $row[$key] = Carbon::createFromFormat('Y-m-d', $value)->format('d M Y');
+            // }
         }
 
         return [

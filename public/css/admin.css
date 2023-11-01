@@ -660,6 +660,7 @@ table {
     overflow: hidden;
     position: relative;
     overflow-y: scroll;
+    overflow-x: scroll;
 }
 
 .table-responsive thead {
@@ -957,6 +958,12 @@ table {
 .registration-form .social-icons a:hover {
     text-decoration: none;
     opacity: 0.6;
+}
+
+.reminder-error{
+    color: red;
+    font-size: 12px;
+    margin-left: 5px;
 }
 
 /* Edit $ Delete */
