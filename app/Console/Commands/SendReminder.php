@@ -3,15 +3,18 @@
 namespace App\Console\Commands;
 
 use App\Events\ReminderEvent;
+use App\Jobs\SendPushNotification;
 use App\Mail\ReminderMail;
 use Illuminate\Console\Command;
 use App\Models\Lisensi;
 use App\Models\Notifikasi;
 use App\Models\User;
+use App\Notifications\PushNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class SendReminder extends Command
 {
@@ -59,7 +62,12 @@ class SendReminder extends Command
             // $SERVER_API_KEY = 'AAAA4ETAcyY:APA91bF2667ab6Sk4pHcdnP7xS6To_-v51baOvMN2gl6YoxUqLn9TSmblyzVJaMrS2oKvfTrwz52TM3EeMeMwbXcxV-M-8X8opjSesIX00Qm7-Lvp_cySTnMRWQ__eAJ9v8kMsiRBVfR';
 
             foreach ($licenses as $license) {
-                event(new ReminderEvent($license->nama_dokumen));
+                $notificationData = [
+                    'message' => 'Ini adalah pesan notifikasi.'
+                ];
+                dispatch(new SendPushNotification($notificationData));
+                // Notification::send($user, new PushNotification($notificationData));
+                // event(new ReminderEvent($notificationData));
 
                 // $result = shell_exec('node notifier.js');
                 // Log::info('SKrip Node.js dijalankan: ' . $result);
