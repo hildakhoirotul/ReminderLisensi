@@ -66,7 +66,7 @@ class SendReminder extends Command
                     'message' => 'Ini adalah pesan notifikasi.'
                 ];
                 // Notification::send($user, new PushNotification($notificationData));
-                event(new ReminderEvent($notificationData));
+                event(new ReminderEvent($license->nama_dokumen));
 
                 // $result = shell_exec('node notifier.js');
                 // Log::info('SKrip Node.js dijalankan: ' . $result);
