@@ -61,12 +61,6 @@ class SendReminder extends Command
             foreach ($licenses as $license) {
                 event(new ReminderEvent($license->nama_dokumen));
 
-                $response = Http::post('http://localhost:3000/api/posts/store', [
-                    'title' => $license->nama_dokumen,
-                    'content' => 'akan segera berakhir',
-                ]);
-
-                Log::info($response);
                 //     $data = [
                 //         "registration_ids" => $firebaseToken,
                 //         "notification" => [
