@@ -1,24 +1,25 @@
 require('./bootstrap');
 
-window.Echo.channel('reminder')
-    .listen('.message', (e) => {
-        console.log('testing')
-        if (!('Notification' in window)) {
-            alert('Web Notification is not supported');
-            return;
-        }
+if (!('Notification' in window)) {
+    alert('Web Notification is not supported');
+} else {
+    Notification.requestPermission(permission => {
+        if (permission === 'granted') {
+            window.Echo.channel('reminder').listen('.message', (e) => {
+                console.log('testing');
+                let notification = new Notification('License Reminder!', {
+                    body: e.message + " akan segera berakhir masa waktunya.", // content for the alert
+                    icon: "https://pusher.com/static_logos/320x320.png" // optional image url
+                });
 
-        Notification.requestPermission(permission => {
-            let notification = new Notification('License Reminder!', {
-                body: e.message + " akan segera berakhir masa waktunya.", // content for the alert
-                icon: "https://pusher.com/static_logos/320x320.png" // optional image url
+                notification.onclick = () => {
+                    window.open(window.location.href);
+                };
             });
+        }
+    });
+}
 
-            notification.onclick = () => {
-                window.open(window.location.href);
-            };
-        });
-    }) 
 
 // 'use strict';
 

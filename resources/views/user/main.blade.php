@@ -198,8 +198,7 @@
                 var notifikasiId = element.getAttribute('data-notif-id');
 
                 // Kirim notifikasiId ke server melalui AJAX
-                $.post('{{ route('
-                    markAs - read ') }}', {
+                $.post('{{ route('markAs - read') }}', {
                         notifikasi_id: notifikasiId
                     },
                     function(data) {
