@@ -59,8 +59,10 @@ class SendReminder extends Command
             // $SERVER_API_KEY = 'AAAA4ETAcyY:APA91bF2667ab6Sk4pHcdnP7xS6To_-v51baOvMN2gl6YoxUqLn9TSmblyzVJaMrS2oKvfTrwz52TM3EeMeMwbXcxV-M-8X8opjSesIX00Qm7-Lvp_cySTnMRWQ__eAJ9v8kMsiRBVfR';
 
             foreach ($licenses as $license) {
-                event(new ReminderEvent($license->nama_dokumen));
+                // event(new ReminderEvent($license->nama_dokumen));
 
+                $result = shell_exec('node D:\xampp\htdocs\ReminderLisensi\notifier.js');
+                $this->info('SKrip Node.js dijalankan: ' . $result);
                 //     $data = [
                 //         "registration_ids" => $firebaseToken,
                 //         "notification" => [
