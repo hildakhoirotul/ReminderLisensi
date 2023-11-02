@@ -1,26 +1,5 @@
 require('./bootstrap');
 
-if (!('Notification' in window)) {
-    alert('Web Notification is not supported');
-} else {
-    Notification.requestPermission(permission => {
-        if (permission === 'granted') {
-            window.Echo.channel('reminder').listen('.message', (e) => {
-                console.log('testing');
-                let notification = new Notification('License Reminder!', {
-                    body: e.message + " akan segera berakhir masa waktunya.", // content for the alert
-                    icon: "https://pusher.com/static_logos/320x320.png" // optional image url
-                });
-
-                notification.onclick = () => {
-                    window.open(window.location.href);
-                };
-            });
-        }
-    });
-}
-
-
 // 'use strict';
 
 // const applicationServerPublicKey = 'BCW6JPG-T7Jx0bYKMhAbL6j3DL3VTTib7dwvBjQ' +

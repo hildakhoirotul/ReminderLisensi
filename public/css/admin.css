@@ -36,7 +36,7 @@ h6 {
     right: 15px;
     bottom: 15px;
     z-index: 996;
-    background: #0563bb;
+    background: rgb(5, 99, 187);
     width: 40px;
     height: 40px;
     border-radius: 50px;
@@ -126,6 +126,7 @@ h6 {
     left: 0;
     right: 0;
     z-index: 98;
+    background-color: rgb(255, 255, 255, 0.8);
 }
 
 @media (max-width: 991px) {
@@ -578,15 +579,15 @@ section {
 }
 
 .bg-gradient-faded-primary {
-    background-image: radial-gradient(370px circle at 80% 50%, rgba(233, 30, 99, 0.6) 0, #c1134e 100%);
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(178, 18, 72, 0.6) 0, #980c3c 100%);
 }
 
 .bg-gradient-faded-success {
-    background-image: radial-gradient(370px circle at 80% 50%, rgba(76, 175, 80, 0.6) 0, #3d8b40 100%);
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(40, 111, 43, 0.6) 0, #2c612e 100%);
 }
 
 .bg-gradient-faded-info {
-    background-image: radial-gradient(370px circle at 80% 50%, rgba(26, 115, 232, 0.6) 0, #135cbc 100%);
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(27, 90, 174, 0.6) 0, #144990 100%);
 }
 
 .bg-gradient-faded-warning {
@@ -594,7 +595,7 @@ section {
 }
 
 .bg-gradient-faded-danger {
-    background-image: radial-gradient(370px circle at 80% 50%, rgba(244, 67, 53, 0.6) 0, #e91d0d 100%);
+    background-image: radial-gradient(370px circle at 80% 50%, rgba(179, 45, 34, 0.6) 0, #ba1609 100%);
 }
 
 .bg-gradient-faded-light {
@@ -688,13 +689,24 @@ table {
     align-items: center;
 }
 
+.btn-delete {
+    background-color: #bb0505;;
+    color: #fff;
+    height: 45px !important;
+    max-width: 45px !important;
+}
+
+.btn-delete:hover {
+    max-width: 300px !important;
+}
+
 .button {
     background-color: rgb(255, 255, 255, .7);
     color: #0563bb;
     text-decoration: none;
     border-radius: 60px;
     height: 38px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     text-align: center;
     overflow: hidden;

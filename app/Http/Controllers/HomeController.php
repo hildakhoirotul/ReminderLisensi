@@ -175,6 +175,13 @@ class HomeController extends Controller
         return redirect()->back();
     }
 
+    public function deleteNotif(Request $request)
+    {
+        $ids = $request->input('ids');
+        Notifikasi::whereIn('id', $ids)->delete();
+        return redirect()->back();
+    }
+
     public function EditLisensi(Request $request)
     {
         $data = Lisensi::find($request->id);

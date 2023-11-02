@@ -56,7 +56,7 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-info shadow-primary border-radius-lg p-3">
                                 <div class="button-container">
-                                    <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#addModal">
+                                    <button type="button" class="button p-1" data-bs-toggle="modal" data-bs-target="#addModal">
                                         <span class="icon"><i class="bi bi-plus" style="font-size: 31px;"></i></span>
                                         <span class="text">Tambah</span>
                                     </button>

@@ -91,11 +91,11 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-info shadow-primary border-radius-lg p-3">
                                 <div class="button-container">
-                                    <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <button type="button" class="button p-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         <span class="icon"><i class="bi bi-plus" style="font-size: 31px;"></i></span>
                                         <span class="text">Tambah</span>
                                     </button>
-                                    <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#importExcel">
+                                    <button type="button" class="button p-1" data-bs-toggle="modal" data-bs-target="#importExcel">
                                         <span class="icon"><i class="bi bi-upload" style="padding-left: 6px;font-size: 20px;"></i></span>
                                         <span class="text ms-2">Unggah</span>
                                     </button>
@@ -111,7 +111,7 @@
                                         <span class="icon" style="padding-left: 9px;"><i class="bi bi-download" style="font-size: 20px;"></i></span>
                                         <span class="text ms-2">Unduh</span>
                                     </a>
-                                    <button type="button" class="button" onclick="showResetConfirmation(event, this)">
+                                    <button type="button" class="button p-1" onclick="showResetConfirmation(event, this)">
                                         <span class="icon" style="padding-left: 5px;"><i class="bi bi-trash" style="font-size: 21px;"></i></span>
                                         <span class="text ms-2">Reset</span>
                                     </button>

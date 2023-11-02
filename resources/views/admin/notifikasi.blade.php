@@ -5,32 +5,21 @@
     <section id="about" class="about">
         <div class="container-fluid px-5" data-aos="fade-up">
 
-            <div class="section-title">
+            <div class="section-title justify-content-between d-flex align-items-center pe-3">
                 <h2>Notifikasi</h2>
+                <button type="button" class="button btn-delete p-1" id="removeDataButton" style="background-color: #bb0505;">
+                    <span class="icon" style="padding-left: 7px;color: #fff;"><i class="bi bi-trash" style="font-size: 24px;"></i></span>
+                    <span class="text ms-3" style="color: #fff;font-size: 16px;">Hapus</span>
+                </button>
             </div>
 
             <div class="row">
-                <p>
-                    <button disabled class="js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-                        Enable Push Messaging
-                    </button>
-                </p>
-                <section class="subscription-details js-subscription-details is-invisible">
-                    <p>Once you've subscribed your user, you'd send their subscription to your
-                        server to store in a database so that when you want to send a message
-                        you can lookup the subscription and send a message to it.</p>
-                    <p>To simplify things for this code lab copy the following details
-                        into the <a href="https://web-push-codelab.glitch.me/">Push Companion
-                            Site</a> and it'll send a push message for you, using the application
-                        server keys on the site - so make sure they match.</p>
-                    <pre><code class="js-subscription-json"></code></pre>
-                </section>
                 <div class="col-12">
                     <!-- Hari ini -->
-                    <div class="card mt-4 mb-5">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-faded-info shadow-primary border-radius-lg p-2">
-                                <h6 class="text-white text-capitalize pt-1 ps-3">Hari ini</h6>
+                    <div class="card mt-4 mb-5" style="border-radius: unset;">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2" style="border-radius: 0px;">
+                            <div class="bg-gradient-faded-info shadow-primary p-2 py-3 justify-content-between align-items-center d-flex">
+                                <h5 class="text-white text-capitalize mb-0 ps-3">Hari ini</h5>
                             </div>
                         </div>
                         <div class="card-body pb-2">
@@ -43,7 +32,7 @@
                                         <div class="box-body p-0">
                                             <div class="px-3 py-2 d-flex align-items-center justify-content-between bg-light border-bottom">
                                                 <div>
-                                                    <input type="checkbox" class="checkbox mx-2">
+                                                    <input type="checkbox" class="checkbox mx-2" data-id="{{$notifikasi->id}}" data-checked="{{ $notifikasi->isChecked ? 'true' : 'false' }}">
                                                     <span class="text-truncate" style="font-weight: 700;">License Reminder</span>
                                                     <p class="small mb-0 mt-2">Masa berlaku lisensi {{ $notifikasi->nama_dokumen }} akan berakhir pada {{ \Carbon\Carbon::parse($notifikasi->end)->format('d F Y') }}</p>
                                                 </div>
@@ -61,10 +50,10 @@
                         </div>
                     </div>
                     <!-- Kemarin -->
-                    <div class="card mb-5">
+                    <div class="card mb-5" style="border-radius: unset;">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-faded-primary shadow-primary border-radius-lg p-2">
-                                <h6 class="text-white text-capitalize pt-1 ps-3">Kemarin</h6>
+                            <div class="bg-gradient-faded-primary d-flex align-items-center justify-content-between shadow-primary p-2">
+                                <h5 class="text-white text-capitalize pt-1 ps-3">Kemarin</h5>
                             </div>
                         </div>
                         <div class="card-body pb-2">
@@ -77,7 +66,7 @@
                                         <div class="box-body p-0">
                                             <div class="px-3 py-2 d-flex align-items-center justify-content-between bg-light border-bottom">
                                                 <div>
-                                                    <input type="checkbox" class="checkbox mx-2">
+                                                    <input type="checkbox" class="checkbox mx-2" data-id="{{$notifikasi->id}}" data-checked="{{ $notifikasi->isChecked ? 'true' : 'false' }}">
                                                     <span class="text-truncate" style="font-weight: 700;">License Reminder</span>
                                                     <p class="small mb-0 mt-2">Masa berlaku lisensi {{ $notifikasi->nama_dokumen }} akan berakhir pada {{ \Carbon\Carbon::parse($notifikasi->end)->format('d F Y') }}</p>
                                                 </div>
@@ -94,10 +83,10 @@
                         </div>
                     </div>
                     <!-- Seminggu yang lalu -->
-                    <div class="card mb-5">
+                    <div class="card mb-5" style="border-radius: unset;">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-faded-danger shadow-primary border-radius-lg p-2">
-                                <h6 class="text-white text-capitalize pt-1 ps-3">Seminggu yang lalu</h6>
+                            <div class="bg-gradient-faded-danger shadow-primary p-2">
+                                <h6 class="text-white text-capitalize pt-1 ps-3">Minggu ini</h6>
                             </div>
                         </div>
                         <div class="card-body pb-2">
@@ -127,9 +116,9 @@
                         </div>
                     </div>
                     <!-- Bulan ini -->
-                    <div class="card mb-5">
+                    <div class="card mb-5" style="border-radius: unset;">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-faded-success shadow-primary border-radius-lg p-2">
+                            <div class="bg-gradient-faded-success shadow-primary p-2">
                                 <h6 class="text-white text-capitalize pt-1 ps-3">Bulan ini</h6>
                             </div>
                         </div>
@@ -198,4 +187,82 @@
     </section>
 
 </main>
+
+<script src="{{ asset('js/jquery.js') }}"></script>
+<script>
+    function handleCheckboxChanges() {
+        function updateSelectedIdsInLocalStorage(selectedIds) {
+            localStorage.setItem("selectedIds", JSON.stringify(selectedIds));
+        }
+
+        var selectedIds = getSelectedIdsFromLocalStorage();
+        $(".checkbox").each(function() {
+            var dataId = $(this).data("id");
+            if (selectedIds.includes(dataId)) {
+                $(this).prop("checked", true);
+            }
+        });
+
+        $(".checkbox").change(function() {
+            var isChecked = $(this).prop("checked");
+            var dataId = $(this).data("id");
+            var selectedIds = getSelectedIdsFromLocalStorage();
+
+            if (isChecked) {
+                selectedIds.push(dataId);
+            } else {
+                selectedIds = selectedIds.filter(function(id) {
+                    return id !== dataId;
+                });
+            }
+
+            localStorage.setItem("selectedIds", JSON.stringify(selectedIds));
+        });
+
+    }
+
+    function getSelectedIdsFromLocalStorage() {
+        var selectedIds = JSON.parse(localStorage.getItem("selectedIds")) || [];
+        return selectedIds;
+    }
+
+    $(document).ready(function() {
+        handleCheckboxChanges();
+
+        $(".checkbox").change(function() {
+            handleCheckboxChanges();
+        });
+    });
+
+    function deleteSelectedData() {
+        var selectedIds = getSelectedIdsFromLocalStorage();
+
+        if (selectedIds.length > 0) {
+            if (confirm("Anda yakin ingin menghapus data yang dipilih?")) {
+                $.ajax({
+                    url: "{{ url('delete-notifikasi')}}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        ids: selectedIds
+                    },
+                    success: function(response) {
+                        localStorage.removeItem("selectedIds");
+                        $(".checkbox").prop("checked", false);
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error("Terjadi kesalahan: " + error);
+                    }
+                });
+            }
+
+        } else {
+            alert("Pilih setidaknya satu data untuk dihapus.");
+        }
+    };
+    $("#removeDataButton").click(function() {
+        deleteSelectedData();
+    });
+</script>
 @endsection

@@ -4,9 +4,7 @@
             <div id="notifikasi-dropdown" class="dropdown text-end">
                 <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-bell-fill"></i>
-                    @if(!empty($countNotif))
-                    <span class="badge">{{ $countNotif }}</span>
-                    @endif
+                    <span class="badge"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end notifikasi text-small py-0">
                     @php $i=1 @endphp

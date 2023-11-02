@@ -62,9 +62,6 @@ class SendReminder extends Command
             // $SERVER_API_KEY = 'AAAA4ETAcyY:APA91bF2667ab6Sk4pHcdnP7xS6To_-v51baOvMN2gl6YoxUqLn9TSmblyzVJaMrS2oKvfTrwz52TM3EeMeMwbXcxV-M-8X8opjSesIX00Qm7-Lvp_cySTnMRWQ__eAJ9v8kMsiRBVfR';
 
             foreach ($licenses as $license) {
-                $notificationData = [
-                    'message' => 'Ini adalah pesan notifikasi.'
-                ];
                 // Notification::send($user, new PushNotification($notificationData));
                 event(new ReminderEvent($license->nama_dokumen));
 
@@ -99,21 +96,21 @@ class SendReminder extends Command
                 //     $response = curl_exec($ch);
                 // Notifikasi yang muncul di email
                 // if (!empty($firebaseToken)) {
-                // try {
-                //     foreach ($emails as $email) {
-                //         Mail::to($email)->send(new ReminderMail($email, $license));
-                //     }
-                // } catch (\Exception $e) {
-                //     report($e);
-                //     $this->info('Gagal mengirim email');
-                // }
+                try {
+                    foreach ($emails as $email) {
+                        Mail::to($email)->send(new ReminderMail($email, $license));
+                    }
+                } catch (\Exception $e) {
+                    report($e);
+                    $this->info('Gagal mengirim email');
+                }
                 // Notifikasi yang muncul di halaman notifikasi
-                // Notifikasi::create([
-                //     'nama_dokumen' => $license->nama_dokumen,
-                //     'start' => $license->start,
-                //     'end' => $license->end,
-                //     'read' => 0,
-                // ]);
+                Notifikasi::create([
+                    'nama_dokumen' => $license->nama_dokumen,
+                    'start' => $license->start,
+                    'end' => $license->end,
+                    'read' => 0,
+                ]);
 
             }
             // }

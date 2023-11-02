@@ -60,8 +60,10 @@ class AdminController extends Controller
                 $notifikasi->category = 'Last Week';
             } elseif ($timeDifference->m == 0) {
                 $notifikasi->category = 'This Month';
-            } else {
+            } elseif ($timeDifference->m > 1) {
                 $notifikasi->category = 'Months ago';
+            } else {
+
             }
             return $notifikasi;
         });
@@ -291,6 +293,13 @@ class AdminController extends Controller
     public function resetLisensi()
     {
         Lisensi::truncate();
+        return redirect()->back();
+    }
+
+    public function removeNotif(Request $request)
+    {
+        $ids = $request->input('ids');
+        Notifikasi::whereIn('id', $ids)->delete();
         return redirect()->back();
     }
 
