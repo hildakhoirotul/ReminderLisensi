@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use Throwable;
 
-class LisensiImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure, WithBatchInserts
+class LisensiImport implements ToModel, WithHeadingRow, SkipsOnFailure, WithBatchInserts
 {
     /**
      * @param array $row
@@ -23,18 +23,19 @@ class LisensiImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
      */
     use Importable, SkipsFailures;
 
-    protected $errors = [];
+    // protected $errors = [];
     protected $items = [];
 
-    public function rules(): array
-    {
-        return [
-            'reminder1' => 'required',
-        ];
-    }
+    // public function rules(): array
+    // {
+    //     return [
+    //         'reminder1' => 'required',
+    //     ];
+    // }
 
     public function model(array $row)
     {
+        $nama_dokumen = $row['nama_dokumen'];
         $start = intval($row['start']);
         $end = intval($row['end']);
         $reminder1 = intval($row['reminder1']);
@@ -43,20 +44,28 @@ class LisensiImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
 
         $lisensi2 =  new Lisensi([
             'nama_dokumen' => $row['nama_dokumen'],
-            'start' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($start)->format('Y-m-d'),
-            'end' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($end)->format('Y-m-d'),
-            'reminder1' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($reminder1)->format('Y-m-d'),
-            'reminder2' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($reminder2)->format('Y-m-d'),
-            'reminder3' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($reminder3)->format('Y-m-d'),
+            'start' => $start,
+            'end' => $end,
+            'reminder1' => $reminder1,
+            'reminder2' => $reminder2,
+            'reminder3' => $reminder3,
         ]);
         $this->items[] = $lisensi2;
+        if (empty($nama_dokumen) || empty($start) || empty($end) || empty($reminder1) || empty($reminder2) || empty($reminder3)) {
+            return null;
+        }
 
+        $startDate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($start)->format('Y-m-d');
+        $endDate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($end)->format('Y-m-d');
         $reminder1Date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($reminder1)->format('Y-m-d');
         $reminder2Date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($reminder2)->format('Y-m-d');
         $reminder3Date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($reminder3)->format('Y-m-d');
 
+        if ($reminder1Date < $startDate) {
+            return null;
+        }
+
         if ($reminder2Date < $reminder1Date) {
-            // $this->errors[] = 'Tanggal Reminder 2 tidak boleh lebih awal daripada Reminder 1.';
             return null;
         }
 
@@ -64,10 +73,14 @@ class LisensiImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
             return null;
         }
 
+        if ($endDate < $reminder3Date) {
+            return null;
+        }
+
         $lisensi =  new Lisensi([
             'nama_dokumen' => $row['nama_dokumen'],
-            'start' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($start)->format('Y-m-d'),
-            'end' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($end)->format('Y-m-d'),
+            'start' => $startDate,
+            'end' => $endDate,
             'reminder1' => $reminder1Date,
             'reminder2' => $reminder2Date,
             'reminder3' => $reminder3Date,
@@ -81,34 +94,34 @@ class LisensiImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
         return 1000;
     }
 
-    public function onError(Throwable $e)
-    {
-        $this->errors[] = $e->getMessage();
-    }
+    // public function onError(Throwable $e)
+    // {
+    //     $this->errors[] = $e->getMessage();
+    // }
 
-    public function getErrors(): array
-    {
-        return $this->errors;
-    }
+    // public function getErrors(): array
+    // {
+    //     return $this->errors;
+    // }
 
     public function getItems()
     {
         return $this->items;
     }
 
-    public function withValidation($validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->any()) {
-                $this->errors[] = $validator->errors()->all();
-            }
-        });
-    }
+    // public function withValidation($validator)
+    // {
+    //     $validator->after(function ($validator) {
+    //         if ($validator->errors()->any()) {
+    //             $this->errors[] = $validator->errors()->all();
+    //         }
+    //     });
+    // }
 
-    public function customValidationMessages(): array
-    {
-        return [
-            'reminder1.required' => 'Reminder 1 harus diisi.',
-        ];
-    }
+    // public function customValidationMessages(): array
+    // {
+    //     return [
+    //         'reminder1.required' => 'Reminder 1 harus diisi.',
+    //     ];
+    // }
 }

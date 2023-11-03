@@ -339,6 +339,11 @@
                 return;
             }
 
+            if (end <= reminder3) {
+                alert('Oops!, End tidak bisa lebih awal dari Reminder 3.');
+                return;
+            }
+
             console.log(editedData);
 
             $.ajax({
@@ -412,9 +417,12 @@
                 $('#reminder2-error').text(''); // Hapus pesan peringatan jika valid
             }
 
-            if (reminder3 <= reminder2) {
+            if (reminder3 < reminder2) {
                 $('#reminder3').val(''); // Hapus tanggal jika tidak valid
                 $('#reminder3-error').text('Oops!, Reminder 3 tidak bisa lebih awal dari Reminder 2.');
+            } else if (end < reminder3) {
+                $('#reminder3').val(''); // Hapus tanggal jika tidak valid
+                $('#reminder3-error').text('Oops!, Reminder 3 tidak bisa lebih lama dari End.');
             } else {
                 $('#reminder3-error').text(''); // Hapus pesan peringatan jika valid
             }

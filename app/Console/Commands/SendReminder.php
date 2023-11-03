@@ -65,6 +65,17 @@ class SendReminder extends Command
                 // Notification::send($user, new PushNotification($notificationData));
                 event(new ReminderEvent($license->nama_dokumen));
 
+                $data = [
+                    'title' => $license->nama_dokumen,
+                    'content' => $license->end,
+                ];
+
+                // $response = Http::post('http://localhost:3000/api/posts/store', $data);
+                // if($response->successful()) {
+                //     Log::info('berhasil terkirim');
+                // } else {
+                //     Log::info('gagal mengirim');
+                // }
                 // $result = shell_exec('node notifier.js');
                 // Log::info('SKrip Node.js dijalankan: ' . $result);
                 //     $data = [
@@ -96,21 +107,21 @@ class SendReminder extends Command
                 //     $response = curl_exec($ch);
                 // Notifikasi yang muncul di email
                 // if (!empty($firebaseToken)) {
-                try {
-                    foreach ($emails as $email) {
-                        Mail::to($email)->send(new ReminderMail($email, $license));
-                    }
-                } catch (\Exception $e) {
-                    report($e);
-                    $this->info('Gagal mengirim email');
-                }
+                // try {
+                //     foreach ($emails as $email) {
+                //         Mail::to($email)->send(new ReminderMail($email, $license));
+                //     }
+                // } catch (\Exception $e) {
+                //     report($e);
+                //     $this->info('Gagal mengirim email');
+                // }
                 // Notifikasi yang muncul di halaman notifikasi
-                Notifikasi::create([
-                    'nama_dokumen' => $license->nama_dokumen,
-                    'start' => $license->start,
-                    'end' => $license->end,
-                    'read' => 0,
-                ]);
+                // Notifikasi::create([
+                //     'nama_dokumen' => $license->nama_dokumen,
+                //     'start' => $license->start,
+                //     'end' => $license->end,
+                //     'read' => 0,
+                // ]);
 
             }
             // }

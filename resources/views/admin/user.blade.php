@@ -258,14 +258,43 @@
                     for (let i = 0; i < cells.length; i++) {
                         let cell = cells[i];
                         let fieldName = cell.dataset.field;
+
                         if (fieldName !== 'nomor' && fieldName !== 'action') {
+                            let element = document.createElement('p'); // Default: <p> element
+
                             if (fieldName !== 'chain') {
-                                cell.innerHTML = "<p class='text-xs mb-0' data-" + fieldName + "='" + editedData[fieldName] + "'>" + editedData[fieldName] + "</p>";
+                                element.innerText = editedData[fieldName];
                             } else {
-                                cell.innerHTML = "<input type='password' class='password-text' data-" + fieldName + "='" + editedData[fieldName] + "' value='" + editedData[fieldName] + "' readonly>" + "<i class='toggle-password-icon bi bi-eye-slash-fill' onclick='togglePasswordVisibility(this)'></i>";
+                                element = document.createElement('div');
+                                element.classList.add('password-container');
+
+                                let inputElement = document.createElement('input');
+                                inputElement.type = 'password';
+                                inputElement.classList.add('password-text');
+                                inputElement.classList.add('text-m');
+                                inputElement.setAttribute('data-' + fieldName, editedData[fieldName]);
+                                inputElement.value = editedData[fieldName];
+                                inputElement.readOnly = true;
+
+                                let iconElement = document.createElement('i');
+                                iconElement.classList.add('toggle-password-icon', 'bi', 'bi-eye-slash-fill');
+                                iconElement.classList.add('text-m')
+                                iconElement.onclick = function() {
+                                    togglePasswordVisibility(iconElement);
+                                };
+
+                                element.appendChild(inputElement);
+                                element.appendChild(iconElement);
                             }
+
+                            element.classList.add('text-xs', 'mb-0');
+                            element.setAttribute('data-' + fieldName, editedData[fieldName]);
+
+                            cell.innerHTML = ''; // Hapus isi sel sebelumnya
+                            cell.appendChild(element);
                         }
                     }
+
                     editButton.onclick = function() {
                         startEditing(editButton);
                     };

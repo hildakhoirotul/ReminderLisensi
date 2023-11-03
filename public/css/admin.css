@@ -683,6 +683,14 @@ table {
     font-size: 0.75rem !important;
 }
 
+.text-s {
+    font-size: 0.85rem !important;
+}
+
+.text-m {
+    font-size: 1rem !important;
+}
+
 /* Button on Table */
 .button-container {
     display: flex;
@@ -690,7 +698,8 @@ table {
 }
 
 .btn-delete {
-    background-color: #bb0505;;
+    background-color: #bb0505;
+    ;
     color: #fff;
     height: 45px !important;
     max-width: 45px !important;
@@ -972,7 +981,7 @@ table {
     opacity: 0.6;
 }
 
-.reminder-error{
+.reminder-error {
     color: red;
     font-size: 12px;
     margin-left: 5px;
@@ -1009,4 +1018,9 @@ table {
     /* right: 5px; */
     transform: translateY(-50%);
     cursor: pointer;
+}
+
+.swal2-popup {
+    max-height: 400px;
+    overflow-y: auto;
 }

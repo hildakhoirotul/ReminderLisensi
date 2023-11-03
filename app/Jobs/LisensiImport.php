@@ -39,21 +39,36 @@ class LisensiImport implements ShouldQueue
         $import = new ImportsLisensiImport();
         Excel::import($import, $this->path);
 
+        // dd($import->getItems());
         $errorMessages = [];
         $i = "1";
-        foreach ($import->failures() as $failure) {
-            $error = $failure->errors();
-            $errorMessages[] = ($i++ . ". Kesalahan pada baris " . $failure->row() . ', ' . implode(", ", $error) . "<br>");
+        // foreach ($import->failures() as $failure) {
+        //     $error = $failure->errors();
+        //     $errorMessages[] = ($i++ . ". Kesalahan pada baris " . $failure->row() . ', ' . implode(", ", $error) . "<br>");
 
-            // $i++;
-        }
+        // }
 
         foreach ($import->getItems() as $index => $item) {
-            if ($item['reminder2'] < $item['reminder1']) {
-                $errorMessages[] = ($i++ . ". Kesalahan pada baris " . ($index + 1) . ", Reminder 2 tidak bisa lebih awal dari Reminder 1 <br>");
-            }
-            if ($item['reminder3'] < $item['reminder2']) {
-                $errorMessages[] = ($i++ . ". Kesalahan pada baris " . ($index + 1) . ", Reminder 3 tidak bisa lebih awal dari Reminder 2 <br>");
+            // dd($item['reminder1']);
+            $index++;
+            if ($item['nama_dokumen'] == 0 || $item['start'] == 0 || $item['end'] == 0 || $item['reminder1'] == 0 || $item['reminder2'] == 0 || $item['reminder3'] == 0) {
+                $errorMessages[] = ($i++ . ". Kesalahan pada baris " . ($index + 1) . ", data tidak boleh kosong <br>");
+            } else {
+                if ($item['reminder2'] < $item['reminder1']) {
+                    $errorMessages[] = ($i++ . ". Kesalahan pada baris " . ($index + 1) . ", Reminder 2 tidak bisa lebih awal dari Reminder 1 <br>");
+                }
+                if ($item['reminder3'] < $item['reminder2']) {
+                    $errorMessages[] = ($i++ . ". Kesalahan pada baris " . ($index + 1) . ", Reminder 3 tidak bisa lebih awal dari Reminder 2 <br>");
+                }
+                if ($item['reminder1'] < $item['start']) {
+                    $errorMessages[] = ($i++ . ". Kesalahan pada baris " . ($index + 1) . ", Reminder 1 tidak bisa lebih awal dari Start <br>");
+                }
+                if ($item['end'] < $item['reminder3']) {
+                    $errorMessages[] = ($i++ . ". Kesalahan pada baris " . ($index + 1) . ", End tidak bisa lebih awal dari Reminder 3 <br>");
+                }
+                if ($item['end'] < $item['start']) {
+                    $errorMessages[] = ($i++ . ". Kesalahan pada baris " . ($index + 1) . ", End tidak bisa lebih awal dari Start <br>");
+                }
             }
         }
 
