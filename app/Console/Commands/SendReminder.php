@@ -116,12 +116,12 @@ class SendReminder extends Command
                     $this->info('Gagal mengirim email');
                 }
                 // Notifikasi yang muncul di halaman notifikasi
-                // Notifikasi::create([
-                //     'nama_dokumen' => $license->nama_dokumen,
-                //     'start' => $license->start,
-                //     'end' => $license->end,
-                //     'read' => 0,
-                // ]);
+                Notifikasi::create([
+                    'nama_dokumen' => $license->nama_dokumen,
+                    'start' => $license->start,
+                    'end' => $license->end,
+                    'read' => 0,
+                ]);
 
             }
             // }
