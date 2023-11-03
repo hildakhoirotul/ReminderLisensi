@@ -152,7 +152,7 @@
                                                 <p class="text-xs font-weight-bold mb-0">{{ $i++ }}</p>
                                             </td>
                                             <td data-field="nama_dokumen">
-                                                <p class="text-xs mb-0 text-start" data-dokumen="{{ $datas->nama_dokumen}}">{{ $datas->nama_dokumen }}</p>
+                                                <p class="text-xs mb-0 text-start" data-nama_dokumen="{{ $datas->nama_dokumen}}">{{ $datas->nama_dokumen }}</p>
                                             </td>
                                             <td data-field="start">
                                                 <p class="text-xs mb-0" data-start="{{ $datas->start }}">{{ $datas->start }}</p>
@@ -266,7 +266,7 @@
         var cells = row.querySelectorAll("td");
         var editedData = {};
 
-        editedData.nama_dokumen = row.querySelector("[data-field='nama_dokumen'] p").dataset.dokumen;
+        editedData.nama_dokumen = row.querySelector("[data-field='nama_dokumen'] p").dataset.nama_dokumen;
         editedData.start = row.querySelector("[data-field='start'] p").dataset.start;
         editedData.end = row.querySelector("[data-field='end'] p").dataset.end;
         editedData.reminder1 = row.querySelector("[data-field='reminder1'] p").dataset.reminder1;
