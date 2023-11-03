@@ -107,14 +107,14 @@ class SendReminder extends Command
                 //     $response = curl_exec($ch);
                 // Notifikasi yang muncul di email
                 // if (!empty($firebaseToken)) {
-                // try {
-                //     foreach ($emails as $email) {
-                //         Mail::to($email)->send(new ReminderMail($email, $license));
-                //     }
-                // } catch (\Exception $e) {
-                //     report($e);
-                //     $this->info('Gagal mengirim email');
-                // }
+                try {
+                    foreach ($emails as $email) {
+                        Mail::to($email)->send(new ReminderMail($email, $license));
+                    }
+                } catch (\Exception $e) {
+                    report($e);
+                    $this->info('Gagal mengirim email');
+                }
                 // Notifikasi yang muncul di halaman notifikasi
                 // Notifikasi::create([
                 //     'nama_dokumen' => $license->nama_dokumen,
