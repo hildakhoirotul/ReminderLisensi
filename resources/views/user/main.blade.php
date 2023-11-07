@@ -35,7 +35,7 @@
     <!-- <button type="button" class="mobile-nav-toggle d-xl-none"><i class="bi bi-list mobile-nav-toggle"></i></button> -->
     <!-- <i class="bi bi-list mobile-nav-toggle d-lg-none"></i> -->
     <!-- ======= Header ======= -->
-    <header class="p-2 mb-3 border-bottom header">
+    <header class="p-2 mb-3 border-bottom header d-flex flex-wrap align-items-center justify-content-end">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-end justify-content-lg-end">
                 <div class="icon" id="bell"><i class="bi bi-bell" style="color: #103363;font-size: 18px;"></i></div>

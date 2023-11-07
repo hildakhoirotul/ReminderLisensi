@@ -33,7 +33,7 @@
     <!-- ======= Header ======= -->
 
     <!-- End Header -->
-    <header class="p-2 mb-3 border-bottom header">
+    <header class="p-2 mb-3 border-bottom header d-flex flex-wrap align-items-center justify-content-end">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-end justify-content-lg-end">
                 <div class="icon" id="bell"><i class="bi bi-bell" style="color: #103363;font-size: 18px;"></i></div>
