@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Dashboard</title>
+    <title>@yield('title')</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -34,62 +35,50 @@
     <!-- <button type="button" class="mobile-nav-toggle d-xl-none"><i class="bi bi-list mobile-nav-toggle"></i></button> -->
     <!-- <i class="bi bi-list mobile-nav-toggle d-lg-none"></i> -->
     <!-- ======= Header ======= -->
-    <header class="p-1 mb-3 border-bottom header">
+    <header class="p-2 mb-3 border-bottom header">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-end justify-content-lg-end">
-                <div id="notifikasi-dropdown" class="dropdown text-end">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-bell-fill"></i>
-                        @if(!empty($countNotif))
-                        <span class="badge">{{ $countNotif }}</span>
-                        @endif
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end notifikasi text-small py-0">
-                        @php $i=1 @endphp
-                        @if(!empty($countNotif))
+                <div class="icon" id="bell"><i class="bi bi-bell-fill" style="color: #91989f;"></i></div>
+                @if(!empty($countNotif))
+                <span class="badge" id="notificationBadge">{{ $countNotif }}</span>
+                @endif
+                <div class="notifications" id="box">
+                    <h2>Notifications - <span>{{ $countNotif }}</span></h2>
+                    <div class="notif">
                         @foreach($notif as $notifikasi)
-                        <li>
-                            <div class="dropdown-item d-flex align-items-center" data-notif-id="{{ $notifikasi->id }}"><i class="bi bi-chat-quote"></i><span style="font-weight: 800;">Reminder,</span>&nbsp;lisensi {{ $notifikasi->nama_dokumen }}</div>
-                        </li>
+                        <div class="notifications-item"> <img src="{{ asset('img/notif.png') }}" alt="img">
+                            <div class="text">
+                                <h4>Reminder!!!</h4>
+                                <p data-id="{{ $notifikasi->id }}">Lisensi {{ $notifikasi->nama_dokumen}} akan berakhir</p>
+                            </div>
+                        </div>
                         @endforeach
-                        <li>
-                            <a class="dropdown-item text-center" href="{{ route('notif') }}">Lihat Selengkapnya</a>
-                        </li>
+                    </div>
+                    <div class="py-2">
+                        @if(!empty($countNotif))
+                        <a class="dropdown-item text-center text-s" style="color: #91989f;" href="{{ route('notif') }}">Lihat Selengkapnya ...</a>
                         @else
-                        <li>
-                            <div class="dropdown-item">Belum ada pesan saat ini ...</div>
-                        </li>
+                        <a class="dropdown-item text-center text-s" style="color: #91989f;">Belum ada pesan ...</a>
                         @endif
-                    </ul>
+                    </div>
                 </div>
-                <div class="dropdown text-end">
-                    <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle"></i>
-                        <span class="ms-2">{{ Auth::user()->nama }}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end text-small">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                <a type="button" class="btn btn-danger me-4" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                <i class="bi bi-door-open-fill"></i>
-                                <span>{{ __('Logout') }}</span>
+                    <i class="bi bi-door-open-fill me-1" style="font-size: 16px;"></i>
+                    <span style="font-weight: 600;">{{ __('Logout') }}</span>
+                </a>
 
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
-                </div>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </div>
         </div>
     </header>
     <header id="header" class="d-flex flex-column justify-content-center">
         <nav id="navbar" class="navbar nav-menu">
             <ul>
-                <li><a href="{{ route('home') }}" data-link="/home" class="nav-link scrollto active"><i class="bi bi-table"></i><span>Database</span></a></li>
-                <li><a href="{{ route('notif') }}" data-link="/notification" class="nav-link scrollto"><i class="bi bi-bell"></i><span>Notifikasi</span></a></li>
+                <li><a href="{{ route('home') }}" data-link="ReminderLisensi/home" class="nav-link scrollto active"><i class="bi bi-table"></i><span>Database</span></a></li>
+                <li><a href="{{ route('notif') }}" data-link="ReminderLisensi/notification" class="nav-link scrollto"><i class="bi bi-bell"></i><span>Notifikasi</span></a></li>
             </ul>
         </nav>
         <!-- .nav-menu -->
@@ -190,21 +179,35 @@
         });
     </script>
     <script>
-        document.getElementById('notifikasi-dropdown').addEventListener('shown.bs.dropdown', function() {
-            // Saat dropdown dibuka, cari elemen dengan atribut data-notif-id
-            var notifikasiElements = this.querySelectorAll('[data-notif-id]');
+        document.getElementById('bell').addEventListener('click', function() {
+            var notificationBadge = document.getElementById('notificationBadge');
+            var notifications = document.getElementById('box');
+            var notifikasiElements = notifications.querySelectorAll('[data-id]');
 
+            console.log(notifikasiElements);
             notifikasiElements.forEach(function(element) {
-                var notifikasiId = element.getAttribute('data-notif-id');
+                var notifikasiId = element.getAttribute('data-id');
 
-                // Kirim notifikasiId ke server melalui AJAX
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Tambahkan CSRF token
+                    }
+                });
+
                 $.post('{{ route('markAs-read') }}', {
                         notifikasi_id: notifikasiId
                     },
                     function(data) {
                         console.log(data.message); // Output pesan dari server
+                        element.setAttribute('data-read', 'true'); // Setel atribut data-read menjadi 'true' untuk menandai notifikasi sebagai dibaca
                     });
             });
+
+            if (notifications.style.display === 'none' || notifications.style.display === '') {
+                notifications.style.display = 'block';
+            } else {
+                notifications.style.display = 'none';
+            }
         });
     </script>
 </body>

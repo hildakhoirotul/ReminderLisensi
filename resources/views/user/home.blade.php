@@ -1,4 +1,5 @@
 @extends('user.main')
+@section('title', 'Database Lisensi')
 
 @section('content')
 <main id="main">

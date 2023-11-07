@@ -1,47 +1,33 @@
 <header class="p-2 mb-3 border-bottom header">
     <div class="container-fluid">
         <div class="d-flex flex-wrap align-items-center justify-content-end justify-content-lg-end">
-            <div id="notifikasi-dropdown" class="dropdown text-end">
-                <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-bell-fill"></i>
-                    <span class="badge"></span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end notifikasi text-small py-0">
-                    @php $i=1 @endphp
-                    @if(!empty($countNotif))
+            <div class="icon" id="bell"><i class="bi bi-bell-fill" style="color: #91989f;"></i></div>
+            <span class="badge" id="notificationBadge">{{ $countNotif }}</span>
+            <div class="notifications" id="box">
+                <h2>Notifications - <span>{{ $countNotif }}</span></h2>
+                <div class="notif">
                     @foreach($notif as $notifikasi)
-                    <li>
-                        <div class="dropdown-item d-flex align-items-center" data-notif-id="{{ $notifikasi->id }}"><i class="bi bi-chat-quote"></i><span style="font-weight: 800;">Reminder,</span>&nbsp;lisensi {{ $notifikasi->nama_dokumen }}</div>
-                    </li>
+                    <div class="notifications-item"> <img src="{{ asset('img/notif.png') }}" alt="img">
+                        <div class="text">
+                            <h4>Reminder!!!</h4>
+                            <p data-id="{{ $notifikasi->id }}">Lisensi {{ $notifikasi->nama_dokumen}} akan berakhir</p>
+                        </div>
+                    </div>
                     @endforeach
-                    <li>
-                        <a class="dropdown-item text-center" href="{{ route('notifikasi') }}">Lihat Selengkapnya</a>
-                    </li>
-                    @else
-                    <li><div class="dropdown-item">Belum ada pesan saat ini ...</div></li>
-                    @endif
-                </ul>
+                </div>
+                <div class="py-2">
+                    <a class="dropdown-item text-center text-s" style="color: #91989f;" href="{{ route('notifikasi') }}">Lihat Selengkapnya ...</a>
+                </div>
             </div>
-            <div class="dropdown text-end">
-                <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle"></i>
-                    <span class="ms-2" style="font-weight: 600;">{{ Auth::user()->nama }}</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end text-small">
-                    <li>
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+            <a type="button" class="btn btn-danger me-4" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                            <i class="bi bi-door-open-fill"></i>
-                            <span style="font-weight: 600;">{{ __('Logout') }}</span>
+                <i class="bi bi-person-circle me-1" style="font-size: 16px;"></i>
+                <span style="font-weight: 600;">{{ __('Logout') }}</span>
+            </a>
 
-                        </a>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                    </li>
-                </ul>
-            </div>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
         </div>
     </div>
 </header>

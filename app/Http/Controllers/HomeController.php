@@ -148,6 +148,12 @@ class HomeController extends Controller
         return redirect()->back();
     }
 
+    public function resetnotification()
+    {
+        Notifikasi::truncate();
+        return redirect()->back();
+    }
+
     public function searchlisensi(Request $request)
     {
         $searchTerm = $request->input('search');

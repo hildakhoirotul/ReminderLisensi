@@ -1,4 +1,5 @@
 @extends('admin.main')
+@section('title', 'Database Lisensi')
 
 @section('content')
 <main id="main">
@@ -11,7 +12,7 @@
                         <h5 class="modal-title text-center" id="importExcelLabel">Tambah Data</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body justify-content-center px-3 pt-2 pb-1 mb-0">
+                    <div class="modal-body justify-content-center p-3 pe-1 mb-0">
                         @csrf
                         <div class="registration-form">
                             <div class="form-group">
@@ -58,7 +59,7 @@
             <form action="{{ route('import.database') }}" method="post" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header p-2 px-3">
-                        <h5 class="modal-title" id="importExcelLabel">Import Data Excel</h5>
+                        <h5 class="modal-title" id="importExcelLabel" style="font-size: 18px;color:#000;">Import Data Excel</h5>
                     </div>
                     <div class="modal-body px-3 pt-2 pb-1 mb-0">
                         <!-- Tempatkan form import di sini -->

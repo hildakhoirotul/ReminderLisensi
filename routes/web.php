@@ -32,6 +32,7 @@ Route::controller(AdminController::class)->middleware('is_admin')->group(functio
     Route::post('/import-database', 'importDatabase')->name('import.database');
     Route::get('/export-database', 'exportDatabase')->name('export.database');
     Route::get('reset-lisensi', 'resetLisensi');
+    Route::get('reset-notifikasi', 'resetnotifikasi');
     Route::get('/search-lisensi', 'searchlisensi')->name('search.lisensi');
     Route::get('/search-user', 'searchUser')->name('search.user');
     Route::delete('/destroy/{id}', 'destroy')->name('lisensi.destroy');
@@ -41,7 +42,7 @@ Route::controller(AdminController::class)->middleware('is_admin')->group(functio
     Route::post('/edit-user', 'EditUser')->name('edit.user');
     Route::post('/save-token', 'saveToken')->name('save.token');
     Route::post('/send-notif', 'sendNotif')->name('send.notif');
-    Route::post('/mark-as-read', 'markAsRead')->name('mark-as-read');
+    Route::post('/mark-as-read', 'markAsRead')->name('markAsRead');
 });
 
 Route::controller(HomeController::class)->middleware('is_user')->group(function () {
@@ -51,6 +52,7 @@ Route::controller(HomeController::class)->middleware('is_user')->group(function 
     Route::post('/import-lisensi', 'importDatabase')->name('user.import.database');
     Route::get('/export-lisensi', 'exportDatabase')->name('user.export.database');
     Route::get('reset-database', 'resetLisensi');
+    Route::get('reset-notification', 'resetNotification');
     Route::get('/search-database', 'searchlisensi')->name('user.search.lisensi');
     Route::delete('/destroy-lisensi/{id}', 'destroy')->name('user.lisensi.destroy');
     Route::post('/user-edit-lisensi', 'EditLisensi')->name('user.edit.lisensi');

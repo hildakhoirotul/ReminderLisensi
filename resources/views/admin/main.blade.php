@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Dashboard</title>
+    <title>@yield('title')</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -37,7 +37,45 @@
     <!-- ======= Header ======= -->
 
     <!-- End Header -->
-    @include('admin.navbar')
+    <header class="p-2 mb-3 border-bottom header">
+        <div class="container-fluid">
+            <div class="d-flex flex-wrap align-items-center justify-content-end justify-content-lg-end">
+                <div class="icon" id="bell"><i class="bi bi-bell-fill" style="color: #91989f;"></i></div>
+                @if(!empty($countNotif))
+                <span class="badge" id="notificationBadge">{{ $countNotif }}</span>
+                @endif
+                <div class="notifications" id="box">
+                    <h2>Notifications - <span>{{ $countNotif }}</span></h2>
+                    <div class="notif">
+                        @foreach($notif as $notifikasi)
+                        <div class="notifications-item"> <img src="{{ asset('img/notif.png') }}" alt="img">
+                            <div class="text">
+                                <h4>Reminder!!!</h4>
+                                <p data-id="{{ $notifikasi->id }}">Lisensi {{ $notifikasi->nama_dokumen}} akan berakhir</p>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="py-2">
+                        @if(!empty($countNotif))
+                        <a class="dropdown-item text-center text-s" style="color: #91989f;" href="{{ route('notifikasi') }}">Lihat Selengkapnya ...</a>
+                        @else
+                        <a class="dropdown-item text-center text-s" style="color: #91989f;">Belum ada pesan ...</a>
+                        @endif
+                    </div>
+                </div>
+                <a type="button" class="btn btn-danger me-4" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                    <i class="bi bi-door-open-fill me-1" style="font-size: 16px;"></i>
+                    <span style="font-weight: 600;">{{ __('Logout') }}</span>
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </div>
+        </div>
+    </header>
     @include('sweetalert::alert')
 
     @include('admin.sidebar')
@@ -62,12 +100,9 @@
     <script src="{{ asset('js/noframework.waypoints.js') }}"></script>
     <script src="{{ asset('js/validate.js') }}"></script>
     <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <!-- Template Main JS File -->
     <script src="{{ asset('js/main.js') }}"></script>
     <script>
-        let notificationCount = 0;
         if (!('Notification' in window)) {
             alert('Web Notification is not supported');
         } else {
@@ -75,7 +110,6 @@
                 if (permission === 'granted') {
                     window.Echo.channel('reminder').listen('.message', (e) => {
                         console.log('testing');
-                        notificationCount++;
                         let notification = new Notification('License Reminder!', {
                             body: e.message + " akan segera berakhir masa waktunya.", // content for the alert
                             icon: "https://pusher.com/static_logos/320x320.png" // optional image url
@@ -85,45 +119,41 @@
                             window.open(window.location.href);
                         };
 
-                        updateCount(notificationCount);
-                    });
-                    $('.dropdown-menu').on('show.bs.dropdown', function() {
-                        // Set jumlah notifikasi ke nol saat dropdown dibuka
-                        notificationCount = 0;
-                        updateCount(notificationCount);
-                    });
-
-                    // Event saat dropdown notifikasi ditutup
-                    $('.dropdown-menu').on('hidden.bs.dropdown', function() {
-                        // Kembalikan jumlah notifikasi dengan jumlah yang belum dibaca
-                        updateCount(notificationCount);
                     });
                 }
             });
         }
-
-        function updateCount(count) {
-            if (count > 0) {
-                $('.badge').text(count); // Tampilkan jumlah notifikasi di ikon
-            }
-        }
     </script>
     <script>
-        document.getElementById('notifikasi-dropdown').addEventListener('shown.bs.dropdown', function() {
-            // Saat dropdown dibuka, cari elemen dengan atribut data-notif-id
-            var notifikasiElements = this.querySelectorAll('[data-notif-id]');
+        document.getElementById('bell').addEventListener('click', function() {
+            var notificationBadge = document.getElementById('notificationBadge');
+            var notifications = document.getElementById('box');
+            var notifikasiElements = notifications.querySelectorAll('[data-id]');
 
+            console.log(notifikasiElements);
             notifikasiElements.forEach(function(element) {
-                var notifikasiId = element.getAttribute('data-notif-id');
+                var notifikasiId = element.getAttribute('data-id');
 
-                // Kirim notifikasiId ke server melalui AJAX
-                $.post('{{ route('mark-as-read') }}', {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Tambahkan CSRF token
+                    }
+                });
+
+                $.post('{{ route('markAsRead') }}', {
                         notifikasi_id: notifikasiId
                     },
                     function(data) {
                         console.log(data.message); // Output pesan dari server
+                        element.setAttribute('data-read', 'true'); // Setel atribut data-read menjadi 'true' untuk menandai notifikasi sebagai dibaca
                     });
             });
+
+            if (notifications.style.display === 'none' || notifications.style.display === '') {
+                notifications.style.display = 'block';
+            } else {
+                notifications.style.display = 'none';
+            }
         });
     </script>
 </body>

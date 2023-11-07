@@ -79,6 +79,7 @@ class AdminController extends Controller
             $notifikasi->read = true;
             $notifikasi->save();
         }
+        // Notifikasi::where('read', false)->update(['read' => true]);
         // Respon sesuai kebutuhan Anda, misalnya JSON response
         return response()->json(['message' => 'Notifikasi ditandai sebagai dibaca']);
     }
@@ -293,6 +294,12 @@ class AdminController extends Controller
     public function resetLisensi()
     {
         Lisensi::truncate();
+        return redirect()->back();
+    }
+
+    public function resetnotifikasi()
+    {
+        Notifikasi::truncate();
         return redirect()->back();
     }
 
