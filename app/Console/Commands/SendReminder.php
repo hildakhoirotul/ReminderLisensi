@@ -57,56 +57,8 @@ class SendReminder extends Command
         })->get();
 
         if ($licenses->count() > 0) {
-            // Notifikasi yang muncul di desktop
-            // $firebaseToken = User::whereNotNull('device_token')->pluck('device_token')->all();
-            // $SERVER_API_KEY = 'AAAA4ETAcyY:APA91bF2667ab6Sk4pHcdnP7xS6To_-v51baOvMN2gl6YoxUqLn9TSmblyzVJaMrS2oKvfTrwz52TM3EeMeMwbXcxV-M-8X8opjSesIX00Qm7-Lvp_cySTnMRWQ__eAJ9v8kMsiRBVfR';
-
             foreach ($licenses as $license) {
-                // Notification::send($user, new PushNotification($notificationData));
-                event(new ReminderEvent($license->nama_dokumen));
-
-                $data = [
-                    'title' => $license->nama_dokumen,
-                    'content' => $license->end,
-                ];
-
-                // $response = Http::post('http://localhost:3000/api/posts/store', $data);
-                // if($response->successful()) {
-                //     Log::info('berhasil terkirim');
-                // } else {
-                //     Log::info('gagal mengirim');
-                // }
-                // $result = shell_exec('node notifier.js');
-                // Log::info('SKrip Node.js dijalankan: ' . $result);
-                //     $data = [
-                //         "registration_ids" => $firebaseToken,
-                //         "notification" => [
-                //             "title" => "License Reminder",
-                //             "body" => "Lisensi {$license->nama_dokumen} akan segera berakhir masa waktunya.",
-                //         ],
-                //         "data" => [
-                //             "click_action" => "http://127.0.0.1:8000/notifications"
-                //         ]
-                //     ];
-                //     $dataString = json_encode($data);
-
-                //     $headers = [
-                //         'Authorization: key=' . $SERVER_API_KEY,
-                //         'Content-Type: application/json',
-                //     ];
-
-                //     $ch = curl_init();
-
-                //     curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-                //     curl_setopt($ch, CURLOPT_POST, true);
-                //     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                //     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                //     curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-
-                //     $response = curl_exec($ch);
-                // Notifikasi yang muncul di email
-                // if (!empty($firebaseToken)) {
+                // event(new ReminderEvent($license->nama_dokumen));
                 try {
                     foreach ($emails as $email) {
                         Mail::to($email)->send(new ReminderMail($email, $license));
@@ -124,7 +76,6 @@ class SendReminder extends Command
                 ]);
 
             }
-            // }
         }
     }
 }

@@ -75,47 +75,6 @@ class HomeController extends Controller
         return response()->json(['message' => 'Notifikasi ditandai sebagai dibaca']);
     }
 
-    public function save_token(Request $request)
-    {
-        $user = Auth::user();
-        $user->update(['device_token' => $request->token]);
-        // dd($request->token);
-        return response()->json(['token saved succesfully.']);
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama_dokumen' => 'required',
-            'start' => 'required|date',
-            'end' => 'required|date',
-            'reminder1' => 'date',
-            'reminder2' => 'date',
-            'reminder3' => 'date',
-        ]);
-
-        $data = new Lisensi();
-        $data->nama_dokumen = $request->nama_dokumen;
-        $data->start = $request->start;
-        $data->end = $request->end;
-        $data->reminder1 = $request->reminder1;
-        $data->reminder2 = $request->reminder2;
-        $data->reminder3 = $request->reminder3;
-        $data->save();
-
-        // if ($data->end) {
-        //     $endDateTime = \Carbon\Carbon::parse($data->end);
-        //     $now = \Carbon\Carbon::now();
-
-        //     if ($now >= $endDateTime) {
-        //         event(new ReminderNotification($data));
-        //     }
-        // }
-
-        Alert::success('Berhasil', 'Data telah tersimpan.');
-        return redirect()->route('home');
-    }
-
     public function importDatabase(Request $request)
     {
         $file = $request->file('file');
@@ -191,15 +150,12 @@ class HomeController extends Controller
     public function EditLisensi(Request $request)
     {
         $data = Lisensi::find($request->id);
-        // dd($request->newData);
-        // $data->nama_dokumen = $request->newData;
         foreach ($request->newData as $fieldName => $fieldValue) {
             $data->{$fieldName} = $fieldValue;
         }
 
 
         $data->save();
-        // dd($request->newData);
 
         return redirect()->back();
     }

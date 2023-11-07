@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:license-reminders')->dailyAt('08.00');
+        $schedule->command('send:license-reminders')->everyMinute();
     }
 
     /**

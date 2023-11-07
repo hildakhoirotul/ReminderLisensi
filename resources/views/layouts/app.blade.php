@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{ asset('bootstrap-icons/bootstrap-icons.min.css') }}">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bootstrap-5.3.2/css/bootstrap.min.css') }}">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
 </head>
 

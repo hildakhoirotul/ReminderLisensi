@@ -127,7 +127,7 @@ h6 {
     right: 0;
     z-index: 98;
     background-color: rgb(255, 255, 255, 0.8);
-    height: 65px;
+    height: 60px;
     box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
     /* background-color: #fff; */
 }
@@ -927,13 +927,13 @@ table {
 
 .badge {
     position: absolute;
-    top: 12px;
-    right: 160px;
+    top: 13px;
+    right: 170px;
     background-color: red;
     color: white !important;
     border-radius: 50%;
     padding: 2px 5px;
-    font-size: 11px;
+    font-size: 10px;
     cursor: pointer;
 }
 

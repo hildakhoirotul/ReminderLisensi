@@ -23,15 +23,7 @@ class LisensiImport implements ToModel, WithHeadingRow, SkipsOnFailure, WithBatc
      */
     use Importable, SkipsFailures;
 
-    // protected $errors = [];
     protected $items = [];
-
-    // public function rules(): array
-    // {
-    //     return [
-    //         'reminder1' => 'required',
-    //     ];
-    // }
 
     public function model(array $row)
     {
@@ -91,37 +83,11 @@ class LisensiImport implements ToModel, WithHeadingRow, SkipsOnFailure, WithBatc
 
     public function batchSize(): int
     {
-        return 1000;
+        return 500;
     }
-
-    // public function onError(Throwable $e)
-    // {
-    //     $this->errors[] = $e->getMessage();
-    // }
-
-    // public function getErrors(): array
-    // {
-    //     return $this->errors;
-    // }
 
     public function getItems()
     {
         return $this->items;
     }
-
-    // public function withValidation($validator)
-    // {
-    //     $validator->after(function ($validator) {
-    //         if ($validator->errors()->any()) {
-    //             $this->errors[] = $validator->errors()->all();
-    //         }
-    //     });
-    // }
-
-    // public function customValidationMessages(): array
-    // {
-    //     return [
-    //         'reminder1.required' => 'Reminder 1 harus diisi.',
-    //     ];
-    // }
 }

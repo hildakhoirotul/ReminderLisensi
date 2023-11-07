@@ -39,17 +39,10 @@ class LisensiImport implements ShouldQueue
         $import = new ImportsLisensiImport();
         Excel::import($import, $this->path);
 
-        // dd($import->getItems());
         $errorMessages = [];
         $i = "1";
-        // foreach ($import->failures() as $failure) {
-        //     $error = $failure->errors();
-        //     $errorMessages[] = ($i++ . ". Kesalahan pada baris " . $failure->row() . ', ' . implode(", ", $error) . "<br>");
-
-        // }
-
+    
         foreach ($import->getItems() as $index => $item) {
-            // dd($item['reminder1']);
             $index++;
             if ($item['nama_dokumen'] == 0 || $item['start'] == 0 || $item['end'] == 0 || $item['reminder1'] == 0 || $item['reminder2'] == 0 || $item['reminder3'] == 0) {
                 $errorMessages[] = ($i++ . ". Kesalahan pada baris " . ($index + 1) . ", data tidak boleh kosong <br>");

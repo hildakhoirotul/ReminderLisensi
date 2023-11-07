@@ -19,7 +19,7 @@
 
     <!-- Vendor CSS Files -->
     <link href="{{ asset('css/aos.css') }}" rel="stylesheet">
-    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bootstrap-5.3.2/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('css/glightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/swiper-bundle.min.css') }}" rel="stylesheet">
@@ -30,10 +30,6 @@
 </head>
 
 <body>
-
-    <!-- ======= Mobile nav toggle button ======= -->
-    <!-- <button type="button" class="mobile-nav-toggle d-xl-none"><i class="bi bi-list mobile-nav-toggle"></i></button> -->
-    <!-- <i class="bi bi-list mobile-nav-toggle d-lg-none"></i> -->
     <!-- ======= Header ======= -->
 
     <!-- End Header -->
@@ -92,7 +88,6 @@
     <script src="{{ asset('js/aos.js') }}"></script>
     <script src="{{ asset('bootstrap-5.3.2/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('bootstrap-5.3.2/js/bootstrap.min.js') }}"></script>
-    <!-- <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script> -->
     <script src="{{ asset('js/glightbox.min.js') }}"></script>
     <script src="{{ asset('js/isotope.pkgd.min.js') }}"></script>
     <script src="{{ asset('js/swiper-bundle.min.js') }}"></script>
@@ -102,28 +97,6 @@
     <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
     <!-- Template Main JS File -->
     <script src="{{ asset('js/main.js') }}"></script>
-    <script>
-        if (!('Notification' in window)) {
-            alert('Web Notification is not supported');
-        } else {
-            Notification.requestPermission(permission => {
-                if (permission === 'granted') {
-                    window.Echo.channel('reminder').listen('.message', (e) => {
-                        console.log('testing');
-                        let notification = new Notification('License Reminder!', {
-                            body: e.message + " akan segera berakhir masa waktunya.", // content for the alert
-                            icon: "https://pusher.com/static_logos/320x320.png" // optional image url
-                        });
-
-                        notification.onclick = () => {
-                            window.open(window.location.href);
-                        };
-
-                    });
-                }
-            });
-        }
-    </script>
     <script>
         document.getElementById('bell').addEventListener('click', function() {
             var notificationBadge = document.getElementById('notificationBadge');

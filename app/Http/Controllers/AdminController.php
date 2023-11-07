@@ -79,8 +79,6 @@ class AdminController extends Controller
             $notifikasi->read = true;
             $notifikasi->save();
         }
-        // Notifikasi::where('read', false)->update(['read' => true]);
-        // Respon sesuai kebutuhan Anda, misalnya JSON response
         return response()->json(['message' => 'Notifikasi ditandai sebagai dibaca']);
     }
 
@@ -130,15 +128,6 @@ class AdminController extends Controller
         $data->chain = $request->password;
         $data->password = Hash::make($request->password);
         $data->save();
-
-        // if ($data->end) {
-        //     $endDateTime = \Carbon\Carbon::parse($data->end);
-        //     $now = \Carbon\Carbon::now();
-
-        //     if ($now >= $endDateTime) {
-        //         event(new ReminderNotification($data));
-        //     }
-        // }
 
         Alert::success('Berhasil', 'Data telah tersimpan.');
         return redirect()->route('userpage');
@@ -236,47 +225,6 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
     public function destroy($id)
     {
         $lisensi = Lisensi::find($id);
@@ -307,46 +255,6 @@ class AdminController extends Controller
     {
         $ids = $request->input('ids');
         Notifikasi::whereIn('id', $ids)->delete();
-        return redirect()->back();
-    }
-
-    public function saveToken(Request $request)
-    {
-        $user = Auth::user();
-        $user->update(['device_token' => $request->token]);
-        // dd($request->token);
-        return response()->json(['token saved succesfully.']);
-    }
-
-    public function sendNotif(Request $request)
-    {
-        $firebaseToken = User::whereNotNull('device_token')->pluck('device_token')->all();
-        $SERVER_API_KEY = 'AAAA4ETAcyY:APA91bF2667ab6Sk4pHcdnP7xS6To_-v51baOvMN2gl6YoxUqLn9TSmblyzVJaMrS2oKvfTrwz52TM3EeMeMwbXcxV-M-8X8opjSesIX00Qm7-Lvp_cySTnMRWQ__eAJ9v8kMsiRBVfR';
-
-        $data = [
-            "registration_ids" => $firebaseToken,
-            "notification" => [
-                "title" => $request->title,
-                "body" => $request->body,
-            ]
-        ];
-        $dataString = json_encode($data);
-
-        $headers = [
-            'Authorization: key=' . $SERVER_API_KEY,
-            'Content-Type: application/json',
-        ];
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-
-        $response = curl_exec($ch);
         return redirect()->back();
     }
 }
