@@ -38,7 +38,7 @@
     <header class="p-2 mb-3 border-bottom header">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-end justify-content-lg-end">
-                <div class="icon" id="bell"><i class="bi bi-bell-fill" style="color: #91989f;"></i></div>
+                <div class="icon" id="bell"><i class="bi bi-bell" style="color: #103363;font-size: 18px;"></i></div>
                 @if(!empty($countNotif))
                 <span class="badge" id="notificationBadge">{{ $countNotif }}</span>
                 @endif
@@ -62,10 +62,10 @@
                         @endif
                     </div>
                 </div>
-                <a type="button" class="btn btn-danger me-4" href="{{ route('logout') }}" onclick="event.preventDefault();
+                <a type="button" class="btn btn-logout me-4" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                    <i class="bi bi-door-open-fill me-1" style="font-size: 16px;"></i>
-                    <span style="font-weight: 600;">{{ __('Logout') }}</span>
+                    <i class="bi bi-door-open-fill me-1" style="font-size: 18px;"></i>
+                    <span style="font-weight: 600;margin-left: 5px;">{{ __('KELUAR') }}</span>
                 </a>
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -77,8 +77,8 @@
     <header id="header" class="d-flex flex-column justify-content-center">
         <nav id="navbar" class="navbar nav-menu">
             <ul>
-                <li><a href="{{ route('home') }}" data-link="ReminderLisensi/home" class="nav-link scrollto active"><i class="bi bi-table"></i><span>Database</span></a></li>
-                <li><a href="{{ route('notif') }}" data-link="ReminderLisensi/notification" class="nav-link scrollto"><i class="bi bi-bell"></i><span>Notifikasi</span></a></li>
+                <li><a href="{{ route('home') }}" data-link="/home" class="nav-link scrollto active"><i class="bi bi-table"></i><span>Database</span></a></li>
+                <li><a href="{{ route('notif') }}" data-link="/notification" class="nav-link scrollto"><i class="bi bi-bell"></i><span>Notifikasi</span></a></li>
             </ul>
         </nav>
         <!-- .nav-menu -->
@@ -110,74 +110,6 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
-    <script>
-        var firebaseConfig = {
-            apiKey: "AIzaSyCBdAE9wpP_a-SZXQFVECwG5mG8tjzkj3A",
-            authDomain: "reminder-9c0db.firebaseapp.com",
-            databaseURL: "https://reminder-9c0db-default-rtdb.firebaseio.com",
-            projectId: "reminder-9c0db",
-            storageBucket: "reminder-9c0db.appspot.com",
-            messagingSenderId: "963226137382",
-            appId: "1:963226137382:web:5db0be89b7c0f84f3547e7",
-            measurementId: "G-6QDMHQ9WS7"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const messaging = firebase.messaging();
-        messaging.getToken()
-            .then(function(currentToken) {
-                if (currentToken) {
-                    // Token saat ini ada, simpan ke server jika diperlukan
-                    saveToken(currentToken);
-                } else {
-                    // Token saat ini belum ada, minta token baru
-                    messaging.onTokenRefresh(function() {
-                        messaging.getToken()
-                            .then(function(newToken) {
-                                console.log("Token yang diperbarui:", newToken);
-                                saveToken(newToken);
-                            })
-                            .catch(function(err) {
-                                console.log("Gagal mendapatkan token yang diperbarui:", err);
-                            });
-                    });
-                }
-            })
-            .catch(function(err) {
-                console.log('User Chat Token Error: ' + err);
-            });
-
-        function saveToken(token) {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url: '{{ route("user.save.token") }}',
-                type: 'POST',
-                data: {
-                    token: token
-                },
-                dataType: 'JSON',
-                success: function(response) {},
-                error: function(err) {
-                    console.log('User Chat Token Error' + err);
-                },
-            });
-        }
-
-        messaging.onMessage(function(payload) {
-            const noteTitle = payload.notification.title;
-            const noteOptions = {
-                body: payload.notification.body,
-                icon: payload.notification.icon,
-            };
-            new Notification(noteTitle, noteOptions);
-        });
-    </script>
     <script>
         document.getElementById('bell').addEventListener('click', function() {
             var notificationBadge = document.getElementById('notificationBadge');

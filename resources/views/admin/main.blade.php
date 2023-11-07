@@ -40,7 +40,7 @@
     <header class="p-2 mb-3 border-bottom header">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-end justify-content-lg-end">
-                <div class="icon" id="bell"><i class="bi bi-bell-fill" style="color: #91989f;"></i></div>
+                <div class="icon" id="bell"><i class="bi bi-bell" style="color: #103363;font-size: 18px;"></i></div>
                 @if(!empty($countNotif))
                 <span class="badge" id="notificationBadge">{{ $countNotif }}</span>
                 @endif
@@ -64,10 +64,10 @@
                         @endif
                     </div>
                 </div>
-                <a type="button" class="btn btn-danger me-4" href="{{ route('logout') }}" onclick="event.preventDefault();
+                <a type="button" class="btn btn-logout me-4" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                    <i class="bi bi-door-open-fill me-1" style="font-size: 16px;"></i>
-                    <span style="font-weight: 600;">{{ __('Logout') }}</span>
+                    <i class="bi bi-door-open-fill me-1" style="font-size: 18px;"></i>
+                    <span style="font-weight: 600;margin-left: 5px;">{{ __('KELUAR') }}</span>
                 </a>
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

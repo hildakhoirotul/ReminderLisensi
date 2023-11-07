@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-8" id="searchResults">
+                <div class="col-9" id="searchResults" style="padding-right: 50px;">
                     <!-- Hari ini -->
                     <div class="card mt-4 mb-5 searchable" data-category="Today" style="border-radius: unset;">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2" style="border-radius: 0px;">
