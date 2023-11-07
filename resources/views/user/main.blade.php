@@ -77,8 +77,8 @@
     <header id="header" class="d-flex flex-column justify-content-center">
         <nav id="navbar" class="navbar nav-menu">
             <ul>
-                <li><a href="{{ route('home') }}" data-link="/home" class="nav-link scrollto active"><i class="bi bi-table"></i><span>Database</span></a></li>
-                <li><a href="{{ route('notif') }}" data-link="/notification" class="nav-link scrollto"><i class="bi bi-bell"></i><span>Notifikasi</span></a></li>
+                <li><a href="{{ route('home') }}" data-link="/ReminderLisensi/home" class="nav-link scrollto active"><i class="bi bi-table"></i><span>Database</span></a></li>
+                <li><a href="{{ route('notif') }}" data-link="/ReminderLisensi/notification" class="nav-link scrollto"><i class="bi bi-bell"></i><span>Notifikasi</span></a></li>
             </ul>
         </nav>
         <!-- .nav-menu -->
