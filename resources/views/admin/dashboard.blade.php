@@ -112,6 +112,10 @@
                                         <span class="icon" style="padding-left: 9px;"><i class="bi bi-download" style="font-size: 20px;"></i></span>
                                         <span class="text ms-2">Unduh</span>
                                     </a>
+                                    <a href="{{ url('/unduh/Template_lisensi.xlsx') }}" class="button">
+                                        <span class="icon" style="padding-left: 9px;"><i class="bi bi-file-earmark-arrow-down" style="font-size: 20px;"></i></span>
+                                        <span class="text ms-2">Unduh Template</span>
+                                    </a>
                                     <button type="button" class="button p-1" onclick="showResetConfirmation(event, this)">
                                         <span class="icon" style="padding-left: 5px;"><i class="bi bi-trash" style="font-size: 21px;"></i></span>
                                         <span class="text ms-2">Reset</span>

@@ -41,6 +41,7 @@ Route::controller(AdminController::class)->middleware('is_admin')->group(functio
     Route::post('/edit-lisensi', 'EditLisensi')->name('edit.lisensi');
     Route::post('/edit-user', 'EditUser')->name('edit.user');
     Route::post('/mark-as-read', 'markAsRead')->name('markAsRead');
+    Route::get('/unduh/{nama_file}', 'unduh')->name('unduh.template');
 });
 
 Route::controller(HomeController::class)->middleware('is_user')->group(function () {
@@ -56,6 +57,7 @@ Route::controller(HomeController::class)->middleware('is_user')->group(function 
     Route::post('/user-edit-lisensi', 'EditLisensi')->name('user.edit.lisensi');
     Route::post('/markAs-read', 'markAs_Read')->name('markAs-read');
     Route::post('remove-notifikasi', 'deleteNotif');
+    Route::get('/unduh/template/{nama_file}', 'unduh')->name('unduh');
 });
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('is_user')->name('home');

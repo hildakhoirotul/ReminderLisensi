@@ -257,4 +257,15 @@ class AdminController extends Controller
         Notifikasi::whereIn('id', $ids)->delete();
         return redirect()->back();
     }
+
+    public function unduh($nama_file)
+    {
+        $path = storage_path('app/public/Download/' . $nama_file);
+
+        if (file_exists($path)) {
+            return response()->download($path);
+        } else {
+            abort(404);
+        }
+    }
 }
