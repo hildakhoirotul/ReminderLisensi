@@ -100,14 +100,6 @@
                                         <span class="icon"><i class="bi bi-upload" style="padding-left: 6px;font-size: 20px;"></i></span>
                                         <span class="text ms-2">Unggah</span>
                                     </button>
-                                    <!-- <a href="#" class="button">
-                                        <span class="icon"><i class="bi bi-plus" style="font-size: 38px;"></i></span>
-                                        <span class="text">Tambah</span>
-                                    </a> -->
-                                    <!-- <a href="#" class="button" data-toggle="modal" data-target="#importExcel">
-                                        <span class="icon" style="padding-left: 9px;"><i class="bi bi-upload" style="font-size: 20px;"></i></span>
-                                        <span class="text ms-2">Unggah</span>
-                                    </a> -->
                                     <a href="{{ route('user.export.database') }}" class="button">
                                         <span class="icon" style="padding-left: 9px;"><i class="bi bi-download" style="font-size: 20px;"></i></span>
                                         <span class="text ms-2">Unduh</span>
@@ -120,10 +112,6 @@
                                         <span class="icon" style="padding-left: 5px;"><i class="bi bi-trash" style="font-size: 21px;"></i></span>
                                         <span class="text ms-2">Reset</span>
                                     </button>
-                                    <!-- <a href="#" class="button" onclick="showDeleteConfirmation(event, this)">
-                                        <span class="icon" style="padding-left: 9px;"><i class="bi bi-trash" style="font-size: 21px;"></i></span>
-                                        <span class="text ms-2">Reset</span>
-                                    </a> -->
                                 </div>
                                 <div class="button-container">
                                     <span class="text-xs text-white">Jumlah data: {{ $count }}</span>

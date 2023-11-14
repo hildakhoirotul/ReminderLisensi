@@ -30,10 +30,6 @@
 </head>
 
 <body>
-
-    <!-- ======= Mobile nav toggle button ======= -->
-    <!-- <button type="button" class="mobile-nav-toggle d-xl-none"><i class="bi bi-list mobile-nav-toggle"></i></button> -->
-    <!-- <i class="bi bi-list mobile-nav-toggle d-lg-none"></i> -->
     <!-- ======= Header ======= -->
     <header class="p-2 mb-3 border-bottom header d-flex flex-wrap align-items-center justify-content-end">
         <div class="container-fluid">
@@ -81,8 +77,6 @@
                 <li><a href="{{ route('notif') }}" data-link="/ReminderLisensi/notification" class="nav-link scrollto"><i class="bi bi-bell"></i><span>Notifikasi</span></a></li>
             </ul>
         </nav>
-        <!-- .nav-menu -->
-
     </header><!-- End Header -->
 
     @include('sweetalert::alert')
@@ -97,7 +91,7 @@
     <script src="{{ asset('js/purecounter_vanilla.js') }}"></script>
     <script src="{{ asset('js/aos.js') }}"></script>
     <script src="{{ asset('bootstrap-5.3.2/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('bootstrap-5.3.2/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/glightbox.min.js') }}"></script>
     <script src="{{ asset('js/isotope.pkgd.min.js') }}"></script>
     <script src="{{ asset('js/swiper-bundle.min.js') }}"></script>
@@ -120,7 +114,7 @@
 
                 $.ajaxSetup({
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Tambahkan CSRF token
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
 
@@ -128,8 +122,8 @@
                         notifikasi_id: notifikasiId
                     },
                     function(data) {
-                        console.log(data.message); // Output pesan dari server
-                        element.setAttribute('data-read', 'true'); // Setel atribut data-read menjadi 'true' untuk menandai notifikasi sebagai dibaca
+                        console.log(data.message);
+                        element.setAttribute('data-read', 'true');
                     });
             });
 
