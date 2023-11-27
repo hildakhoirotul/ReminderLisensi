@@ -42,6 +42,10 @@
                                 <label for="reminder3">REMINDER 3</label>
                                 <input type="date" class="form-control item" name="reminder3" id="reminder3">
                             </div>
+                            <div class="form-group">
+                                <label for="pic">PIC</label>
+                                <input type="text" class="form-control item" name="pic" id="pic" placeholder="Type here ...">
+                            </div>
                             <div class="reminder-error" id="reminder3-error"></div>
                             <div class="form-group d-flex justify-content-center">
                                 <button type="submit" class="btn btn-block create-account">Simpan</button>
@@ -134,6 +138,7 @@
                                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">reminder 1</th>
                                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">reminder 2</th>
                                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">reminder 3</th>
+                                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">PIC</th>
                                             <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">action</th>
                                         </tr>
                                     </thead>
@@ -161,6 +166,9 @@
                                             </td>
                                             <td data-field="reminder3">
                                                 <p class="text-xs mb-0" data-reminder3="{{ $datas->reminder3 }}">{{ $datas->reminder3 }}</p>
+                                            </td>
+                                            <td data-field="pic">
+                                                <p class="text-xs mb-0" data-pic="{{ $datas->pic }}">{{ $datas->pic }}</p>
                                             </td>
                                             <td data-field="action">
                                                 <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
@@ -265,12 +273,13 @@
         editedData.reminder1 = row.querySelector("[data-field='reminder1'] p").dataset.reminder1;
         editedData.reminder2 = row.querySelector("[data-field='reminder2'] p").dataset.reminder2;
         editedData.reminder3 = row.querySelector("[data-field='reminder3'] p").dataset.reminder3;
+        editedData.pic = row.querySelector("[data-field='pic'] p").dataset.pic;
         for (let i = 0; i < cells.length; i++) {
             let cell = cells[i];
             let fieldName = cell.dataset.field;
             if (fieldName !== 'nomor' && fieldName !== 'action') {
                 let input;
-                if (fieldName !== 'nama_dokumen') {
+                if (fieldName !== 'nama_dokumen' && fieldName !== 'pic') {
                     input = document.createElement("input");
                     input.type = "date";
                     input.value = cell.innerText;

@@ -93,6 +93,7 @@ class HomeController extends Controller
         $data->reminder1 = $request->reminder1;
         $data->reminder2 = $request->reminder2;
         $data->reminder3 = $request->reminder3;
+        $data->pic = $request->pic;
         $data->save();
 
         // if ($data->end) {
@@ -158,7 +159,8 @@ class HomeController extends Controller
                 ->orWhere('end', 'LIKE', '%' . $searchTerm . '%')
                 ->orWhere('reminder1', 'LIKE', '%' . $searchTerm . '%')
                 ->orWhere('reminder2', 'LIKE', '%' . $searchTerm . '%')
-                ->orWhere('reminder3', 'LIKE', '%' . $searchTerm . '%');
+                ->orWhere('reminder3', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('pic', 'LIKE', '%' . $searchTerm . '%');
         }
 
         $data = $query->get();
