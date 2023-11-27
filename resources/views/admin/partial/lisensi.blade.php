@@ -22,6 +22,9 @@
     <td data-field="reminder3">
         <p class="text-xs mb-0">{{ $datas->reminder3 }}</p>
     </td>
+    <td data-field="pic">
+        <p class="text-xs mb-0">{{ $datas->pic }}</p>
+    </td>
     <td data-field="action">
         <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
             <button type="button" class="btn btn-warning" onclick="startEditing(this)"><i class="bi bi-pen-fill"></i></button>

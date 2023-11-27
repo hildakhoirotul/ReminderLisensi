@@ -253,6 +253,7 @@
                                                                 <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 16px; line-height: 25.6px;color: #000000;">Berikut Dokumen yang mendekati akhir masa berlaku</span></p>
                                                                 <p style="font-size: 14px; line-height: 160%;"><strong><span style="font-size: 16px; line-height: 25.6px;">Nama Dokumen : {{ $license->nama_dokumen }}</span></strong></p>
                                                                 <p style="font-size: 14px; line-height: 160%;"><strong><span style="font-size: 16px; line-height: 25.6px;">Batas Akhir : {{ \Carbon\Carbon::parse($license->end)->format('d F Y') }}&nbsp;</span></strong></p>
+                                                                <p style="font-size: 14px; line-height: 160%;"><strong><span style="font-size: 16px; line-height: 25.6px;">PIC : {{ $license->pic }}&nbsp;</span></strong></p>
                                                                 <div>
                                                                     <div style="color: #000000;">&nbsp;Segera perbarui lisensi dokumen tersebut sebelum masa berlaku habis.&nbsp;
                                                                         <!-- <div>

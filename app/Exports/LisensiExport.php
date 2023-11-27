@@ -37,6 +37,7 @@ class LisensiExport implements FromArray, WithHeadings, WithMapping, WithStyles
             'Reminder 1',
             'Reminder 2',
             'Reminder 3',
+            'PIC',
         ];
     }
 
@@ -66,6 +67,7 @@ class LisensiExport implements FromArray, WithHeadings, WithMapping, WithStyles
             $row['reminder1'],
             $row['reminder2'],
             $row['reminder3'],
+            $row['pic'],
         ];
     }
 }

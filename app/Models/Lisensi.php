@@ -18,5 +18,6 @@ class Lisensi extends Model
         'reminder1',
         'reminder2',
         'reminder3',
+        'pic',
     ];
 }

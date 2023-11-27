@@ -33,6 +33,7 @@ class LisensiImport implements ToModel, WithHeadingRow, SkipsOnFailure, WithBatc
         $reminder1 = intval($row['reminder1']);
         $reminder2 = intval($row['reminder2']);
         $reminder3 = intval($row['reminder3']);
+        $pic = $row['pic'];
 
         $lisensi2 =  new Lisensi([
             'nama_dokumen' => $row['nama_dokumen'],
@@ -41,6 +42,7 @@ class LisensiImport implements ToModel, WithHeadingRow, SkipsOnFailure, WithBatc
             'reminder1' => $reminder1,
             'reminder2' => $reminder2,
             'reminder3' => $reminder3,
+            'pic' => $pic,
         ]);
         $this->items[] = $lisensi2;
         if (empty($nama_dokumen) || empty($start) || empty($end) || empty($reminder1) || empty($reminder2) || empty($reminder3)) {
@@ -76,6 +78,7 @@ class LisensiImport implements ToModel, WithHeadingRow, SkipsOnFailure, WithBatc
             'reminder1' => $reminder1Date,
             'reminder2' => $reminder2Date,
             'reminder3' => $reminder3Date,
+            'pic' => $row['pic'],
         ]);
 
         return $lisensi;
